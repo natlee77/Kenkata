@@ -1,0 +1,65 @@
+﻿@page "/blog"
+
+<main>
+    <div class="container-bg-banner">
+        <Container>
+            <Row Class="d-flex justify-content-between">
+                <Column>
+                    <Paragraph Class="fs-3 mt-5 mb-5" id="theme-blue-text">Blog</Paragraph>
+                </Column>
+                <Column Class="fs-4">
+                    <Paragraph Alignment="TextAlignment.Right" Class="text-white mt-5 mb-5"><span id="theme-blue-text">Home</span> / Blog</Paragraph>
+                </Column>
+            </Row>
+        </Container>
+    </div>
+    
+    <section>
+        <Container>
+            <div class="row mt-5">
+                
+                <BlogCard1 />
+                <BlogCard2 />
+               
+                
+                <BlogCard1 />
+                <BlogCard2 />
+                
+                
+                <BlogCard1 />
+                <BlogCard2 />
+                
+                
+                <BlogCard1 />
+                <BlogCard2 />
+                
+
+
+            </div>  
+            <Row Class="justify-content-center">
+                <nav id="blog-navigation">
+                    <ul class="pagination align-items-center">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true"><img src="./img/Prev btn.svg" alt="" class="prev-button border-0"></span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#shop-sida1">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#shop-sida2">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#shop-sida3">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true"><img src="./img/Next btn.svg" class="next-button border-0" alt=""></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </Row>
+        </Container>
+    </section>
+
+</main>
+
+@code {
+   
+}

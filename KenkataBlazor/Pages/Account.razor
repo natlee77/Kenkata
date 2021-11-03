@@ -1,0 +1,442 @@
+﻿@page "/account"
+@inject HttpClient Http
+@inject NavigationManager NavManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+
+
+<main>
+
+    @if (accessToken == null)
+    {
+        <div class="container-bg-banner">
+            <Container>
+                <Row Class="d-flex justify-content-between">
+                    <Column>
+                        <Paragraph Class="fs-3 mt-5 mb-5" id="theme-blue-text">My Account</Paragraph>
+                    </Column>
+                    <Column Class="fs-4">
+                        <Paragraph Alignment="TextAlignment.Right" Class="text-white mt-5 mb-5"><span id="theme-blue-text">Home</span> / My Account</Paragraph>
+                    </Column>
+                </Row>
+            </Container>
+        </div>
+        <Container>
+            <Row class="d-flex justify-content-between pt-5">
+                <Column ColumnSize="ColumnSize.Is6.OnTablet" class="pe-sm-3 pb-3">
+                    <EditForm Model="@loginModel" OnValidSubmit="@HandleValidLogin" OnInvalidSubmit="HandleInvalidLogin" class="px-5 py-5" id="theme-gray-bg">
+                        <Validations Mode="ValidationMode.Auto" Model="@loginModel" ValidateOnLoad="false">
+                            <Label class="col-form-label-lg pb-4 fw-bold fs-4" for="form1Example1">LOG IN</Label>
+                            <Validation>
+                                <div class="form-outline mb-4">
+                                    <Label class="form-label" for="form1Example1">Email address</Label>
+                                    <TextEdit Placeholder="" @bind-Text="@loginModel.Email">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </div>
+                            </Validation>
+
+                            <Validation>
+                                <div class="form-outline mb-4">
+                                    <Label class="form-label" for="form1Example2">Password</Label>
+                                    <TextEdit Role="TextRole.Password" @bind-Text="@loginModel.Password">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </div>
+                            </Validation>
+                        </Validations>
+                        <Row class="mb-4 d-flex justify-content-between">
+                            <Column class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           value=""
+                                           id="form1Example3"
+                                           checked />
+                                    <label class="form-check-label" for="form1Example3"> Remember me </label>
+                                </div>
+                            </Column>
+                            <Column class="col">
+                                <Paragraph class="text-end"><a href="#!" class="text-decoration-none" id="theme-blue-text">Forgot password?</a></Paragraph>
+                            </Column>
+                        </Row>
+                        <Button Type="ButtonType.Submit" class="btn-lg btn-rounded-blue" Block="true" Color="Color.Info">LOG IN</Button>
+                        @if (displayUserLoggedIn)
+                        {
+                            <div class="row bg-success text-white" style="margin-top:10px; height:40px">
+                                <label class="p-2">You succesfully logged in... </label>
+                            </div>
+                        }
+                        @if (Errors)
+                        {
+                            <div class="row bg-danger text-white" style="margin-top:10px; height:40px;">
+                                <label class="p-2">Email or Password does not match!</label>
+                            </div>
+                        }
+                    </EditForm>
+                </Column>
+
+                <Column ColumnSize="ColumnSize.Is6.OnTablet" class="ps-sm-3">
+                    <EditForm Model="@registerModel" OnValidSubmit="@HandleRegisterValid" OnInvalidSubmit="@HandleRegisterInvalid" class="px-5 py-5" id="theme-gray-bg">
+                        <Label class="col-form-label-lg fw-bold fs-4" for="form1Example1">REGISTER</Label>
+                        <Label class="col-form-label-sm pb-5" for="form1Example1">Registering for this site allows you to access your order status and history. Just fill in the fields below, and we’ll get a new account set up for you in no time. We will only ask you for information necessary to make the purchase process faster and easier.</Label>
+                        <Validations Mode="ValidationMode.Auto" Model="@registerModel" ValidateOnLoad="false">
+                            <Validation>
+                                <div class="form-outline mb-4">
+                                    <Label class="form-label">First name</Label>
+                                    <TextEdit @bind-Text="@registerModel.FirstName">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </div>
+                            </Validation>
+                            <Validation>
+                                <div class="form-outline mb-4">
+                                    <Label class="form-label">Last name</Label>
+                                    <TextEdit @bind-Text="@registerModel.LastName">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </div>
+                            </Validation>
+                            <Validation>
+                                <div class="form-outline mb-4">
+                                    <Label class="form-label">Email address</Label>
+                                    <TextEdit Role="TextRole.Email" @bind-Text="@registerModel.Email">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </div>
+                            </Validation>
+                            <Validation>
+                                <div class="form-outline mb-4">
+                                    <Label class="form-label">Password</Label>
+                                    <TextEdit Role="TextRole.Password" @bind-Text="@registerModel.Password">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </div>
+                            </Validation>
+                            <Validation>
+                                <div class="form-outline mb-4">
+                                    <Label class="form-label">Address</Label>
+                                    <TextEdit @bind-Text="@registerModel.Address">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </div>
+                            </Validation>
+                            <Validation>
+                                <div class="form-outline mb-4">
+                                    <Label class="form-label">City</Label>
+                                    <TextEdit @bind-Text="@registerModel.City">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </div>
+                            </Validation>
+                            <Validation>
+                                <div class="form-outline mb-4">
+                                    <Label class="form-label">Zip code</Label>
+                                    <TextEdit @bind-Text="@registerModel.ZipCode">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </div>
+                            </Validation>
+                            <Validation>
+                                <div class="form-outline mb-4">
+                                    <Label class="form-label">Phone number</Label>
+                                    <TextEdit @bind-Text="@registerModel.PhoneNumber">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </div>
+                            </Validation>
+                        </Validations>
+                        <Paragraph class="pb-4">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our <a src="#" class="text-decoration-none" id="theme-blue-text">privacy policy.</a></Paragraph>
+                        <Button Block="true" Type="ButtonType.Submit" Color="Color.Info" class="btn btn-rounded-blue btn-lg">REGISTER</Button>
+                        @if (displayUserAddedToDB)
+                        {
+                            <div class="row bg-success text-white" style="margin-top:10px; height:40px">
+                                <label class="p-2">User added to database... </label>
+                            </div>
+                        }
+                    </EditForm>
+                </Column>
+            </Row>
+        </Container>
+    }
+    else
+    {
+        <Container>
+            
+            <Row Class="my-5 p-5 m-0" id="theme-gray-bg">
+                
+                <Column ColumnSize="ColumnSize.Is3.OnTablet.Is12.OnMobile" Class="profile-tabs">
+                    <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged" Class="d-flex flex-row flex-sm-column profile-tabs list-group-flush">
+                        <Items>
+                            <Tab Name="details">My details</Tab>
+                            <Tab Name="orders">My orders</Tab>
+                            <Tab Name="settings">Account settings</Tab>
+                        </Items>
+
+                    </Tabs>
+                </Column>
+                <Column ColumnSize="ColumnSize.Is9.OnTablet.Is12.OnMobile" Class="p-0">
+                    <TabsContent SelectedPanel="@selectedTab" SelectedPanelChanged="@OnSelectedTabChanged">
+                        <TabPanel Name="details">
+                            <Form>
+                                @*<Validations Mode="ValidationMode.Auto" Model="@registerModel" ValidateOnLoad="false">*@
+                                    <div class="form-row">
+                                        @*<Validation>*@
+                                            <div class="form-group col-md-6">
+                                                <Label>Firstname</Label>
+                                                <TextEdit Text="@firstName" class="form-control" id="inputFirstName">
+                                                    @*<Feedback>
+                                                        <ValidationError />
+                                                    </Feedback>*@
+                                                </TextEdit>
+                                            </div>
+                                        @*</Validation>
+                                        <Validation>*@
+                                            <div class="form-group col-md-6">
+                                                <Label>Lastname</Label>
+                                                <TextEdit bind-Text="@lastName" Text="@lastName" class="form-control" id="inputLastName">
+                                                    @*<Feedback>
+                                                        <ValidationError />
+                                                    </Feedback>*@
+                                                </TextEdit>
+                                            </div>
+                                        @*</Validation>*@
+                                    </div>
+                                    <div class="form-row">
+                                        @*<Validation>*@
+                                            <div class="form-group col-md-6">
+                                                <Label>Phonenumber</Label>
+                                                <TextEdit bind-Text="@phoneNumber" Text="@phoneNumber" class="form-control" id="inputPhone">
+                                                    @*<Feedback>
+                                                        <ValidationError />
+                                                    </Feedback>*@
+                                                </TextEdit>
+                                            </div>
+                                        @*</Validation>
+                                        <Validation>*@
+                                            <div class="form-group col-md-6">
+                                                <Label>@address</Label>
+                                                <TextEdit bind-Text="@address" Text="@address" type="text" class="form-control" id="inputAddress">
+                                                    @*<Feedback>
+                                                        <ValidationError />
+                                                    </Feedback>*@
+                                                </TextEdit>
+                                            </div>
+                                        @*</Validation>*@
+                                        <div class="form-row">
+                                            @*<Validation>*@
+                                                <div class="form-group col-md-6">
+                                                    <Label>City</Label>
+                                                    <TextEdit bind-Text="@registerModel.City" Text="@city" type="text" class="form-control" id="inputCity">
+                                                        @*<Feedback>
+                                                            <ValidationError />
+                                                        </Feedback>*@
+                                                    </TextEdit>
+                                                </div>
+                                            @*</Validation>
+                                            <Validation>*@
+                                                <div class="form-group col-md-6">
+                                                    <Label>Zip</Label>
+                                                    <TextEdit bind-Text="@registerModel.ZipCode" Text="@zipCode" class="form-control" id="inputZip">
+                                                        @*<Feedback>
+                                                            <ValidationError />
+                                                        </Feedback>*@
+                                                    </TextEdit>
+                                                </div>
+                                            @*</Validation>*@
+                                        </div>
+                                    </div>
+                                @*</Validations>*@
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </Form>
+                        </TabPanel>
+                        <TabPanel Name="orders">
+                            @*datagrid from API*@
+                            <p></p>
+                        </TabPanel>
+                        <TabPanel Name="settings">
+                            <Form>
+                                <Validations Mode="ValidationMode.Auto" Model="@registerModel" ValidateOnLoad="false">
+                                    <div class="form-row">
+                                        <Validation>
+                                            <div class="form-group col-md-6">
+                                                <Label>Email address</Label>
+                                                <TextEdit Role="TextRole.Email" Text="@email">
+                                                    <Feedback>
+                                                        <ValidationError />
+                                                    </Feedback>
+                                                </TextEdit>
+                                            </div>
+                                        </Validation>
+                                        <Validation>
+                                            <div class="form-group col-md-6">
+                                                <Label>Password</Label>
+                                                <TextEdit Role="TextRole.Password" bind-Text="@registerModel.Password">
+                                                    <Feedback>
+                                                        <ValidationError />
+                                                    </Feedback>
+                                                </TextEdit>
+                                            </div>
+                                        </Validation>
+                                    </div>
+                                </Validations>
+                                <button type="submit" class="btn btn-primary">Save</button>
+
+                            </Form>
+
+                        </TabPanel>
+                    </TabsContent>
+                </Column>
+                <button @onclick="@LogoutUser" class="btn btn-primary" style="margin-left:253px; margin-top:10px;">Logout</button>
+            </Row>
+        </Container>
+
+    }
+</main>
+
+@code{
+    string selectedTab = "details";
+
+    private void OnSelectedTabChanged(string name)
+    {
+        selectedTab = name;
+    }
+    private async Task LogoutUser()
+    {
+        await localStorage.RemoveItemAsync("accessToken");
+        NavManager.NavigateTo("/");
+    }
+
+    private HttpResponseMessage result;
+
+
+    private LoginModel loginModel = new LoginModel();
+
+    private RegisterModel registerModel = new RegisterModel();
+
+    bool Errors = false;
+
+    bool displayUserLoggedIn = false;
+
+
+    private string id { get; set; }
+    private string accessToken { get; set; }
+    private string firstName { get; set; }
+    private string lastName { get; set; }
+    private string phoneNumber { get; set; }
+    private string address { get; set; }
+    private string city { get; set; }
+    private string zipCode { get; set; }
+    private string email { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            accessToken = await localStorage.GetItemAsync<string>("accessToken");
+            firstName = await localStorage.GetItemAsync<string>("firstName");
+            lastName = await localStorage.GetItemAsync<string>("lastName");
+            phoneNumber = await localStorage.GetItemAsync<string>("phoneNumber");
+            address = await localStorage.GetItemAsync<string>("address");
+            city = await localStorage.GetItemAsync<string>("city");
+            zipCode = await localStorage.GetItemAsync<string>("zipCode");
+            email = await localStorage.GetItemAsync<string>("email");
+            id = await localStorage.GetItemAsync<string>("customerId");
+        }
+        catch { }
+    }
+
+    async Task HandleValidLogin(EditContext context)
+    {
+        try
+        {
+            result = await Http.PostAsJsonAsync<LoginModel>("https://localhost:44352/api/users/login", new LoginModel { Email = loginModel.Email, Password = loginModel.Password });
+
+            var data = JsonConvert.DeserializeObject<dynamic>(await result.Content.ReadAsStringAsync());
+            Console.WriteLine(data);
+            Console.WriteLine(data.id);
+
+
+            await localStorage.SetItemAsync("accessToken", data.accessToken.ToString());
+            await localStorage.SetItemAsync("firstName", data.firstName.ToString());
+            await localStorage.SetItemAsync("lastName", data.lastName.ToString());
+            await localStorage.SetItemAsync("phoneNumber", data.phoneNumber.ToString());
+            await localStorage.SetItemAsync("address", data.address.ToString());
+            await localStorage.SetItemAsync("city", data.city.ToString());
+            await localStorage.SetItemAsync("zipCode", data.zipCode.ToString());
+            await localStorage.SetItemAsync("email", data.email.ToString());
+            await localStorage.SetItemAsync("customerId", data.id.ToString());
+
+            NavManager.NavigateTo("/");
+
+            if (result.IsSuccessStatusCode)
+            {
+                Errors = false;
+                displayUserLoggedIn = true;
+
+            }
+            else
+            {
+                displayUserLoggedIn = false;
+                Errors = true;
+            }
+
+        }
+        catch (Exception)
+        {
+
+
+        }
+    }
+
+    private void HandleInvalidLogin(EditContext context)
+    {
+
+    }
+
+    bool displayUserAddedToDB = false;
+
+    async Task HandleRegisterValid(EditContext context)
+    {
+        result = await Http.PostAsJsonAsync<RegisterModel>("https://localhost:44352/api/users/register", new RegisterModel
+        {
+            FirstName = registerModel.FirstName,
+            LastName = registerModel.LastName,
+            Email = registerModel.Email,
+            Password = registerModel.Password,
+            Address = registerModel.Address,
+            City = registerModel.City,
+            ZipCode = registerModel.ZipCode,
+            PhoneNumber = registerModel.PhoneNumber
+
+        });
+        registerModel = new RegisterModel();
+        displayUserAddedToDB = true;
+    }
+
+    private void HandleRegisterInvalid(EditContext context)
+    {
+
+    }
+}

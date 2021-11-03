@@ -1,0 +1,94 @@
+﻿@inject ICartService CartService
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
+
+
+    <tr>
+        @*<th scope="row" class="align-middle"><button @onclick="RemoveCart" href="">x</button></th>*@
+        <td>
+            <div class="d-flex ver-align align-middle">
+                <div class="square-sm mr-2"></div>
+                <div>@ProductName</div>
+            </div>
+        </td>
+        <td class="align-middle">$@Price</td>
+        <td class="align-middle">
+            <div class="row qty" style="width: 120px; height: 40px;">
+                <button style="border-radius: 10px 0px 0px 10px;" @onclick="Dec" class="quantity-btn">-</button>
+
+                <input type="number" class="quantity-input p-0" value=@ShowQuantity min="0" />
+
+                <button style="border-radius: 0px 10px 10px 0px;" @onclick="Inc" class="quantity-btn">+</button>
+            </div>
+        </td>
+        <td class="align-middle f-green">$@subTotalDeci</td>
+    </tr>
+
+
+
+@code {
+    [Parameter]
+    public decimal Price { get; set; }
+
+    [Parameter]
+    public string ProductName { get; set; }
+    [Parameter]
+    public int ShowQuantity { get; set; }
+    [Parameter]
+    public int ProductId { get; set; }
+    [Parameter]
+    public string priceDeci { get; set; }
+    [Parameter]
+    public string subTotalDeci { get; set; }
+
+
+    private decimal subTotal { get; set; }
+    //private string priceDeci { get; set; }
+    //public string subTotalDeci { get; set; }
+    private List<ShoppingCartModel> cart { get; set; }
+    private int Qty { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        //cart = await LocalStorage.GetItemAsync<List<ShoppingCartModel>>("cart");
+        CalculateSubTotal();
+        TwoDecimal();
+        cart = await LocalStorage.GetItemAsync<List<ShoppingCartModel>>("cart");
+        cart.Find(c => c.ProductId == ProductId).QuantityByUser = ShowQuantity;
+
+    }
+
+    private void TwoDecimal()
+    {
+        priceDeci = string.Format("{0:0.00}", Price);
+        subTotalDeci = string.Format("{0:0.00}", subTotal);
+    }
+
+    private async Task Inc()
+    {
+        ShowQuantity = ShowQuantity + 1;
+        subTotal = ShowQuantity * Price;
+        TwoDecimal();
+        cart = await LocalStorage.GetItemAsync<List<ShoppingCartModel>>("cart");
+        cart.Find(c => c.ProductId == ProductId).QuantityByUser = ShowQuantity;
+        await LocalStorage.SetItemAsync("cart", cart);
+    }
+    private async Task Dec()
+    {
+        if (ShowQuantity > 0)
+            ShowQuantity = ShowQuantity - 1;
+
+        subTotal = ShowQuantity * Price;
+        TwoDecimal();
+        cart = await LocalStorage.GetItemAsync<List<ShoppingCartModel>>("cart");
+        cart.Find(c => c.ProductId == ProductId).QuantityByUser = ShowQuantity;
+        await LocalStorage.SetItemAsync("cart", cart);
+    }
+    private void CalculateSubTotal()
+    {
+        subTotal = ShowQuantity * Price;
+    }
+
+
+}

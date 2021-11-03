@@ -1,0 +1,380 @@
+﻿@page "/shop"
+@using System.Net.Http
+@using SharedLibrary.Models 
+@using System.Text.Json
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+
+<div id="theme-dark-blue-bg">
+    <Container>
+        <Row Class="pt-5 pb-5">
+            <Column ColumnSize="ColumnSize.Is12.Is4.OnTablet.Is5.OnDesktop" Class="pt-0 pb-4 align-self-center">
+                <Row Class="flex-column">
+                    <Column ColumnSize="ColumnSize.IsAuto" Class="align-self-center align-self-sm-start">
+                        <Heading Size="HeadingSize.Is2" Class="text-center text-sm-left text-white">
+                            New Customer<br />
+                            Can Get <span id="theme-blue-text">30% Off</span>
+                        </Heading>
+                    </Column>
+                    <Column ColumnSize="ColumnSize.IsAuto" Class="align-self-center align-self-sm-start">
+                        <Button ButtonSize="Large" class="bg-white btn-rounded" id="theme-blue-text">
+                            LEARN MORE
+                        </Button>
+                    </Column>
+                </Row>
+            </Column>
+            <Column ColumnSize="ColumnSize.Is2.Is1.OnDesktop" Class="d-none d-sm-block"></Column>
+            <Column ColumnSize="ColumnSize.Is6" Class="d-none d-sm-block">
+                <img src="../img/Shop-banner-img.svg" class="img-fluid" />
+            </Column>
+        </Row>
+    </Container>
+</div>
+
+<!-- navbar (shop page)-----------start  -->
+<div class="bg-light mt-5 mb-5">
+    <div class="container">
+        <div class="d-flex flex-column flex-sm-row justify-content-between pt-4 pb-4">
+            <div class="mt-2">
+                <h4 class="f-green">Shop</h4>
+                <div>
+                    <span>Home</span> /
+                    <span>Shop</span>
+                </div>
+            </div>
+
+            <div class="row justify-content-center justify-content-sm-start">
+                <div class="shop-rectangle mt-2 mb-2 mr-4">
+                    <div class="d-flex pt-2 pb-1 a-hover ml-4 text-white">
+                        Show:
+                        <Button Class="btn ml-2 mr-2 p-0" Clicked="@(() => OnMaxShownChanged(9))"><span class="text-white"><a>9</a></span></Button>/
+                        <Button Class="btn ml-2 mr-2 p-0" Clicked="@(() => OnMaxShownChanged(12))"><span class="text-white"><a>12</a></span></Button>/
+                        <Button Class="btn ml-2 mr-2 p-0" Clicked="@(() => OnMaxShownChanged(18))"><span class="text-white"><a>18</a></span></Button>/
+                        <Button Class="btn ml-2 mr-2 p-0" Clicked="@(() => OnMaxShownChanged(24))"><span class="text-white"><a>24</a></span></Button>
+                    </div>
+                </div>
+                <div class="shop-rectangle mt-2 mb-2 mr-4">
+                    <div class="d-flex pt-2 pb-1 a-hover ml-3 " style="color: white;">
+                        <a class="ml-2 mr-2" href=""><i class="fas fa-list"></i></a>
+                        <a class="ml-2 mr-2" href=""><i class="fas fa-th-large"></i></a>
+                        <a class="ml-2 mr-3" href=""><i class="fas fa-th"></i></a>
+                    </div>
+                </div>
+                <div class="shop-rectangle mt-2 mb-2 mr-4">
+                    <div class="d-flex pt-1 pb-0 a-hover ml-3 ">
+                        <div class="dropdown">
+                            <button style="color: white;" class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Default sorting
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item text-dark" href="#">Action</a>
+                                <a class="dropdown-item text-dark" href="#">Another action</a>
+                                <a class="dropdown-item text-dark" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- navbar (shop page)-----------end    -->
+<!--Grid system-------------------start-->
+<section>
+    <div class="container">
+        <Row Class="flex-column flex-sm-row">
+            @*Show progress spinner while awaiting API calls*@
+            @if (products == null || categories == null)
+            {
+                <div class="w-100 text-center mb-5">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            }
+            @*Render after*@
+            else
+            {
+                <!--left--colunmn-----------------start--------------------------------------------------------->
+                @*Filter menu start*@
+                <Column ColumnSize="ColumnSize.Is12.OnTablet.Is3.OnDesktop" Class="p-0 m-0">
+                    <div class="accordion mb-3" id="filterCollapseParent">
+                        <div class="card border-0">
+                            <div class="card-header d-sm-none bg-transparent" id="filterCollapseButton">
+                                <button class="btn btn-link btn-block text-center text-white d-flex text-decoration-none justify-content-center"
+                                        id="theme-dark-blue-bg" type="button" data-toggle="collapse" data-target="#filterCollapseDiv" aria-expanded="true" aria-controls="filterCollapseDiv">
+                                    <h6 class="my-auto p-1" id="headerCollapse">Show filters</h6> <i class="fas fa-bars my-auto p-1"></i>
+                                </button>
+                            </div>
+                            <div id="filterCollapseDiv" class="collapse show" aria-labelledby="filterCollapseButton" data-parent="#filterCollapseParent">
+                                <div class="card-body p-0">
+                                    <div>
+                                        <div>
+                                            @*Product categories start*@
+                                            <Container Class="mb-5">
+                                                    <Paragraph Class="font-weight-bolder" id="theme-blue-text">Product categories</Paragraph>
+                                                    <ul class="list-group prod-categories-list">
+                                                        @foreach (var category in categories)
+                                                        {
+                                                            <li class="list-group-item d-flex justify-content-between prod-category list-group-item p-0 pb-2">
+                                                                <Button class="d-flex justify-content-between w-100 p-0" Clicked="@(() => OnCategoryChanged(category.Id))">
+                                                                    @category.CategoriesName
+                                                                    <span class="badge badge-primary badge-pill border text-white prod-category-badge my-auto">18</span>
+                                                                </Button>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                            </Container>
+                                            @*Product categories end*@
+
+                                            <!-- Filter by price (shop page)-----------start  -->
+                                            <div class="container">
+                                                <div class="slidecontainersbp">
+                                                    <p class="textsbp">Filter by Price</p>
+                                                    <input type="range" min="1" max="10000" value="50" class="slidersbp" id="myRange">
+                                                    <div class="d-flex justify-content-between mt-2">
+                                                        <div class="mt-2">
+                                                            <p class="">Price: $ <span id="demo"></span></p>
+                                                        </div>
+                                                        <div>
+                                                            <button type="button" class="btnsbp btn-sm border"> Filter</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Filter by price (shop page)-----------end  -->
+                                            <!-- Product Status  (shop page)-----------start  -->
+                                            <div class="container">
+                                                <h5 class="textsbp mb-3">Product Status</h5>
+                                                <Check TValue="bool" Value="@("OnSale")">On Sale</Check>
+                                                <Check TValue="bool" Value="@("OnSale")">InStock</Check>
+                                            </div>
+                                            <!-- Product Status (shop page)-----------end  -->
+                                            <!-- top rated products (shop page)-----------start  -->
+                                            <div class="container pb-5 d-none d-sm-flex">
+                                                <div class="row">
+                                                    <div class="col-md-auto">
+                                                        <h5 class="mt-5" id="f-green">Top Rated Products</h5>
+                                                        <div class="d-flex mt-3">
+                                                            <div class="prod-square mr-2"></div>
+                                                            <div>
+                                                                <div>Circle pattern girls...</div>
+                                                                <span class="fa fa-star" id="f-green"></span>
+                                                                <span class="fa fa-star" id="f-green"></span>
+                                                                <span class="fa fa-star" id="f-green"></span>
+                                                                <span class="fa fa-star" id="f-green"></span>
+                                                                <span class="fa fa-star"></span>
+                                                                <div>$190</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex mt-3">
+                                                            <div class="prod-square mr-2"></div>
+                                                            <div>
+                                                                <div>Circle pattern girls...</div>
+                                                                <span class="fa fa-star" id="f-green"></span>
+                                                                <span class="fa fa-star" id="f-green"></span>
+                                                                <span class="fa fa-star" id="f-green"></span>
+                                                                <span class="fa fa-star" id="f-green"></span>
+                                                                <span class="fa fa-star"></span>
+                                                                <div>$190</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex mt-3">
+                                                            <div class="prod-square mr-2"></div>
+                                                            <div>
+                                                                <div>Circle pattern girls...</div>
+                                                                <span class="fa fa-star" id="f-green"></span>
+                                                                <span class="fa fa-star" id="f-green"></span>
+                                                                <span class="fa fa-star" id="f-green"></span>
+                                                                <span class="fa fa-star" id="f-green"></span>
+                                                                <span class="fa fa-star"></span>
+                                                                <div>$190</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- top rated products (shop page)-----------end  -->
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </Column>
+                @*Filter menu end*@
+                <!--left--colunmn-----------------end--------------------------------------------------------->
+                <!-- -----------------------         right-- column -----------------start-->
+                <Column>
+                    <Row Class="row-cols-3 row-cols-2 mb-4">
+                        @foreach (var product in GetProductsByPage(CurrentPage))
+                        {
+                                <div class="col-6 col-md-4 mb-4 ">
+                                    <ProductCard Id="@product.Id"
+                                                 Name="@product.ProductName"
+                                                 Info="@product.ProductDescription"
+                                                 Picture="../img/Product thumb.svg"
+                                                 Category="Placeholder"
+                                                 OldPrice="$123.123"
+                                                 Price="@product.Price" />
+                                </div>
+                        }
+                    </Row>
+                    @*//page navigate*@
+                    <Row Class="justify-content-center">
+                        <nav id="Page-navigation">
+                            <ul class="pagination align-items-center">
+                                <li class="page-item">
+                                    <button class="page-link border-0" href="#shop-sida1" aria-label="Previous" @onclick="@(() => OnPageChange(CurrentPage - 1))">
+                                        <span aria-hidden="true"><img src="./img/Prev btn.svg" alt="" class="prev-button"></span>
+                                    </button>
+                                </li>
+                                @for (int pageIndex = 0; pageIndex <= CalcMaxPages(); pageIndex++)
+                                {
+                                    var pageNumber = pageIndex;
+
+                                    <li class="page-item d-none d-sm-flex">
+                                        <button class="page-link border-0" @onclick="@(() => OnPageChange(pageNumber))">
+                                            @(pageIndex + 1)
+                                        </button>
+                                    </li>
+                                }
+                                <li class="page-item">
+                                    <button class="page-link border-0" href="#" aria-label="Next" @onclick="@(() => OnPageChange(CurrentPage + 1))">
+                                        <span aria-hidden="true"><img src="./img/Next btn.svg" class="next-button" alt=""></span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </Row>
+                </Column>
+
+                <!-------------------------right--column -----------------end-->
+            }
+        </Row>
+    <Row>
+
+    </Row>
+    </div>
+</section>
+
+
+
+<!--Grid system---------------------end-->
+<!-- subscribe now -------------------------start -->
+<div class="product-bar-gray mb-5 mt-5">
+    <div class="container">
+        <div class="d-flex justify-content-between">
+            <div class="col-12 col-md-6">
+                <h2 class=" mt-5">SUBSCRIBE<span id="f-green" class="ml-3">NOW</span></h2>
+                <p class="mb-4">
+                    Signup for awesome news about our new products and
+                    know our special discounts on products.
+                </p>
+                <div class="input-group input-group-rounded prod-input">
+                    <input class="input-group-field text-left" type="text" placeholder="Enter email address" style="width: 80%;">
+                    <div class="input-group-button">
+                        <input type="submit" class="button secondary product-bg-green mb-5" value="Subscribe" style="width: 100%; color: white;">
+                    </div>
+                </div>
+            </div>
+            <div class="d-none d-md-flex col-md-6" style=" background-color: #C8C8C8;">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- subscribe now--------------------------end -->
+
+@code {
+
+    bool filterCollapse = true;
+    private IEnumerable<ProductModel> products;
+    private IEnumerable<CategoriesModel> categories;
+
+    private int maxShownPerPage = 24;
+    private int CurrentPage = 0;
+
+    protected async Task OnCategoryChanged(int categoryid)
+    {
+        products = await Http.GetFromJsonAsync<IEnumerable<ProductModel>>($"api/Products/category?categoryid={categoryid}");
+
+        StateHasChanged();
+    }
+
+    private void OnMaxShownChanged(int max)
+    {
+        maxShownPerPage = max;
+
+        StateHasChanged();
+    }
+
+
+    //--------------------Product , hämta from Database
+
+    public ProductModel product { get; set; }
+    private async Task<ProductModel> GetProductAsync(int id)
+    {
+        product = await Http.GetFromJsonAsync<ProductModel>($"api/Products/{id}");
+        return product;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        product = await GetProductAsync(4);
+    }
+    //-------------------
+
+
+    //Pagination
+    //Approximate the maximum amount of pages that all products will fit into, does NOT round up
+    protected int CalcMaxPages()
+    {
+        return (products.Count() / maxShownPerPage);
+    }
+
+    //Checks if new index(PageNumber) resulting from clicking the previous or next page button doesn't go over CalcMaxPages or is below 0, saves new page index to CurrentPage then runs GetProductsByPage
+    private void OnPageChange(int page)
+    {
+        if (page >= 0 && page <= CalcMaxPages())
+        {
+            CurrentPage = page;
+            GetProductsByPage(CurrentPage);
+        }
+    }
+
+    protected IEnumerable<ProductModel>GetProductsByPage(int page)
+    {
+        return products.Skip(maxShownPerPage * page).Take(maxShownPerPage);
+    }
+    //Pagination end
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                products = await Http.GetFromJsonAsync<IEnumerable<ProductModel>>("api/Products");
+                categories = await Http.GetFromJsonAsync<IEnumerable<CategoriesModel>>("api/Categories");
+            }
+            catch (HttpRequestException) // Non success
+            {
+                Console.WriteLine("An error occurred.");
+            }
+            catch (NotSupportedException) // When content type is not valid
+            {
+                Console.WriteLine("The content type is not supported.");
+            }
+
+            StateHasChanged();
+
+            await JSRuntime.InvokeVoidAsync("filterCollapse");
+            await JSRuntime.InvokeVoidAsync("menuItemColor");
+        }
+    }
+}
+}

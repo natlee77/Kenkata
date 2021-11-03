@@ -1,0 +1,94 @@
+﻿@page "/portfolio/details"; 
+
+<div class="container-bg-banner">
+    <Container>
+        <Row Class="d-flex justify-content-between">
+            <Column>
+                <Paragraph Class="fs-3 mt-5 mb-5" id="theme-blue-text">Portfolio</Paragraph>
+            </Column>
+            <Column Class="fs-4">
+                <Paragraph Alignment="TextAlignment.Right" Class="text-white mt-5 mb-5"><span id="theme-blue-text">Home / Portfolio</span> / Placeholder</Paragraph>
+            </Column>
+        </Row>
+    </Container>
+</div>
+
+<Container>
+    <Row Class="d-flex flex-column flex-sm-row">
+        <Column Class="mt-5" ColumnSize="ColumnSize.Is12.Is6.OnTablet">
+            <Paragraph id="theme-blue-text" Class="fs-3 pb-5">@PageTitle</Paragraph>
+            <Paragraph>Date: <span id="theme-blue-text">30 July 2020</span>, Category: <span id="theme-blue-text">Fashion</span></Paragraph>
+            <Paragraph Class="pb-3">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+                It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+            </Paragraph>
+            <Paragraph Class="pb-3">
+                <span id="theme-blue-text">Vivamus dignissim a ex eu ornare. Ut fermentum orci vel diam ultricies faucibus. 
+                Quisque quis erat sed lacus elementum feugiat. Vivamus ac sagittis justo. Suspendisse in purus lobortis, accumsan urna et.</span>
+            </Paragraph>
+            <Paragraph Class="pb-3">
+                Vivamus dignissim a ex eu ornare. Ut fermentum orci vel diam ultricies faucibus. Quisque quis erat sed lacus elementum feugiat. 
+                Vivamus ac sagittis justo. Suspendisse in purus lobortis, accumsan urna et, fermentum dolor. In hac habitasse platea dictumst.
+            </Paragraph>
+            <Row Class="d-flex flex-column flex-sm-row">
+                <Column>
+                    <div class="rounded" id="small-box" />
+                    <div class="rounded mt-4" id="small-box" />
+                </Column>
+                <Column Class="mt-4 mt-sm-0">
+                        <div class="rounded" id="rectangle" />
+                </Column>
+            </Row>
+        </Column>
+        <Column Class="mt-4 mt-sm-5" ColumnSize="ColumnSize.Is12.Is6.OnTablet">
+            <div class="rounded mb-3" id="large-box" />
+            <Paragraph Class="pb-3">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+            </Paragraph>
+            <Paragraph Class="pb-3">
+                <span id="theme-blue-text">
+                    Vivamus dignissim a ex eu ornare. Ut fermentum orci vel diam ultricies faucibus.
+                    Quisque quis erat sed lacus elementum feugiat. Vivamus ac sagittis justo. Suspendisse in purus lobortis, accumsan urna et.</span>
+            </Paragraph>
+            <Paragraph Class="pb-3">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent enim quam, ullamcorper vel tellus vitae, tempus fringilla lectus.
+                Donec maximus justo eu nisl convallis iaculis. Aenean laoreet ullamcorper congue. Nam lobortis eros in risus rhoncus gravida.
+                Pellentesque enim lectus, laoreet sit amet rhoncus in, semper vitae odio. Proin congue malesuada posuere. Aenean dapibus et magna non dictum.
+                Praesent ut lacinia dui, ac malesuada nisi. Nullam pharetra, dui ac tincidunt pellentesque, diam elit dapibus augue, vel lobortis tortor neque eu velit.
+            </Paragraph>
+        </Column>
+    </Row>
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12.Is6.OnTablet" Class="mt-4 mb-4">
+            <div class="btn-group flex-column flex-sm-row w-100" role="group" aria-label="Share on social media">
+                <div class="btn text-white" id="theme-blue-bg">Share on: </div>
+                <button type="button" class="btn btn-secondary text-white" style="background-color: #3b5999">Facebook</button>
+                <button type="button" class="btn btn-secondary text-white" style="background-color: #55acee">Twitter</button>
+                <button type="button" class="btn btn-secondary text-white" style="background-color: #bd081c">Pinterest</button>
+                <button type="button" class="btn btn-secondary text-white" style="background-color: #e4405f">Instagram</button>
+            </div>
+        </Column>
+    </Row>
+</Container>
+
+<div class="container-bg-banner">
+    <Container>
+        <Row>
+            <Column Class="mt-5 mb-5 text-center">
+                <NavLink href="/portfolio"><img src="../img/Home Icon.svg" /></NavLink>
+            </Column>
+        </Row>
+    </Container>
+</div>
+
+
+@code {
+    [Parameter]
+    public string PageTitle { get; set; } = "Lorem Ipsum";
+
+    [Parameter]
+    public string PageBody { get; set; }
+}

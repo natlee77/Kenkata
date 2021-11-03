@@ -1,0 +1,156 @@
+﻿
+.ptext:hover {
+    color: #20D3C2;
+}
+.resentPost img {
+    margin-top: 1.5rem;
+    display:block;
+  
+    width: auto;
+    height: 70px;
+    background-color: #CCCCCC;
+}
+.tags button {
+    margin-left: 1em;
+    margin-bottom: 1em;
+    background-color: none;
+}
+.tags button:hover {
+        background: #20D3C2;
+    }
+
+/*----   instagram---*/
+ .grid-container {   
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 5px;
+}
+ 
+ .g-box {
+    display:inline-block;
+    width: auto;
+    height: 70px;   
+    margin: 0.2rem;
+    background-color: #CCCCCC;
+    border-radius: 0.3rem;
+}
+.g-box img {
+    display: contents;
+}
+.g-box:hover {
+        background-color: #20D3C2;
+    }
+#instagram li{
+    display:none;
+}
+#instagram li:hover {
+    display:list-item      ;
+}
+
+
+/* related post*/
+.grid-sm {
+    display: grid;
+    grid-template-columns: auto auto auto  ;
+    
+}
+.gsm-box {
+    display: inline-block;
+    align-items: center;
+    width: auto;
+    height: 15px;
+    margin: 0.1rem;
+    background-color: #20D3C2;
+}
+.gsm-box img {
+    display: contents;
+}
+
+    .gsm-box:hover {       
+        background-color: #CCCCCC;
+    }
+
+.relatedPost img {
+    
+    display: block;
+    width: auto;
+    height: 90px;
+    background-color: #CCCCCC;
+}
+
+
+.tittle {
+    text-align: center;
+}
+
+
+/* carousel*/
+ 
+.carcard {
+    /*display: block;*/
+    position: relative;
+    width: auto;
+    height: 300px;
+    background-color: #CCCCCC;
+    border-radius: 7px;
+}
+   .carcard:hover > .carcards-body{
+        opacity: 1;
+        transition: all linear 0.3s;
+        -webkit-transition: all linear 0.3s;
+        -moz-transition: all linear 0.3s;
+        backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        -webkit-backface-visibility: hidden
+    }
+
+.carcards-body{
+    background-color: rgba(14, 21, 61, 0.85);
+    width: 100%;
+    height: 100%;
+    border-radius: 7px;
+    position: absolute;
+    bottom: 0;
+    margin:0;
+    padding:0;
+    z-index: 1;
+    opacity: 0;
+    transition: all linear 0.3s;
+    -webkit-transition: all linear 0.3s;
+    -moz-transition: all linear 0.3s;
+}
+      
+.carousel-indicators {
+    bottom: -50px;
+}
+ol.carousel-indicators li,
+ol.carousel-indicators li.active {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    border-radius: 25%;
+    border: 0;
+    background: transparent;
+}
+
+ol.carousel-indicators li {
+    background: #CCCCCC;
+    margin-left: .5rem;
+    margin-right: .5rem;
+}
+
+    ol.carousel-indicators li.active {
+        background: #20D3C2;
+    }
+
+.next-button {
+    position: relative;
+    left: 120px;
+}
+
+
+.prev-button {
+    position: relative;
+    left: -125px;
+    opacity: unset;
+}

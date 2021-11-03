@@ -1,0 +1,578 @@
+﻿@page "/product/{id}"
+@inject IProductService ProductService
+@inject IJSRuntime JSRuntime
+@inject ILocalStorageService LocalStorage
+@inject ICartService CartService
+
+
+@if (product == null)//&& categories == null
+{
+    <div class="w-100 text-center mb-5">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+}
+@*Render after*@
+else
+{
+    <!-- section 1 navbar product page -->
+    <nav class="navbar navbar-expand-lg productnav-dark">
+        <div class="container">
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <ul class="navbar-nav mr-auto" id="ul-li-font-color">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="shop">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Shoes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">@product.ProductName</a>
+                    </li>
+                </ul>
+
+                <div>
+                    <a href="#" class="nav-link"><img class="nav-item" src="../img/BeximBrand.svg" alt="no image"></a>
+                </div>
+                <div>
+                    <a href="#" class="nav-link"><img class="nav-item" src="../img/Grid icon.svg" alt="no image"></a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+    <!-- section 1 navbar product page -->
+    <!-- section 2 add to cart product page -->
+    <div class="container">
+        <div class="row mt-5">
+
+            <div class="col-md-4">
+                <img src="../img/Rectangle 504.svg" style="width: 115%;" alt="">
+            </div>
+
+            <div class="col-md-2 ">
+                <div class="col ">
+                    <div class="col-md-6 m-1">
+                        <img src="../img/Rectangle 506.svg" style="width: auto;" alt="">
+                    </div>
+                    <div class="col-md-6 m-1">
+                        <img src="../img/Rectangle 507.svg" alt="">
+                    </div>
+                    <div class="col-md-6 m-1">
+                        <img src="../img/Rectangle 507.svg" alt="">
+                    </div>
+                    <div class="col-md-6 m-1">
+                        <img src="../img/Rectangle 507.svg" alt="">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+
+                <h2 class="f-green">@product.ProductName</h2>
+                <p> @product.ProductDescription</p>
+                <hr>
+
+                <label class="f-green mr-3">$@product.Price</label>
+                <label class="mr-3" style="text-decoration-line: line-through;">$220.00</label>
+                <label><img src="../img/In stock.svg" alt="no img">  In stock </label>
+
+                <div class="m-2 d-flex">
+
+                    <div class="row mr-3" style="width: 120px; height: 40px;">
+                        <button id="btn-m" style="border-radius: 10px 0px 0px 10px;" @onclick="Dec" class="quantity-btn">-</button>
+
+                        <input id="inp-q" type="number" class="quantity-input p-0 no-arrow" value=@qty min="0" />
+
+                        <button id="btn-p" style="border-radius: 0px 10px 10px 0px;" @onclick="Inc" class="quantity-btn">+</button>
+                    </div>
+
+                    <label>
+                        <a href="javascript:void(0)" @onclick="AddToCart" data-id="1" data-quantity="1" class="add-to-cart ajax product-1">
+                            <img src="../img/Add to Cart.svg" alt="no img" class="mr-3">
+                        </a>
+                    </label>
+                    <label><a href="#"><img src="../img/Color icon.svg" alt="no img" class="mr-3"></a></label>
+                     <Tooltip Text="Compare">
+                        <Button @onclick="AddToCompare" class="p-0 ml-2"><img src="../img/Compare icon.svg" class="quickview-icons" /></Button>
+                    </Tooltip>
+                    <Tooltip Text="Add to wishlist">
+                        <Button @onclick="AddToWish" class="p-0 ml-2"><img src="../img/Heart icon.svg" class="quickview-icons" /></Button>
+                    </Tooltip>
+                </div>
+                <label class="mr-3 mt-4">Category:</label>
+                <label id="f-green">Shoes</label>
+                <div>
+                    <label class="mr-3">Tags:</label>
+                    <label class="mr-3">Fashion</label>
+                    <label class="mr-3">Shoes</label>
+                    <label>Sneakers</label>
+                </div>
+                <div>
+                    <label class="mr-3">Share:</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- section 2 add to cart product page -->
+    <!-- section 3 tabs product page -->
+    <div class="container">
+
+        <ul class="nav nav-tabs prod-nav-tabs mt-5" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link prod-nav-link" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="false">Description</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link prod-nav-link" id="additional-tab" data-toggle="tab" href="#additional" role="tab" aria-controls="additional" aria-selected="false">Additional Information</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link prod-nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="true">Reviews</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link prod-nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="false">About Brand</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade" id="description" role="tabpanel" aria-labelledby="description-tab">
+                <div class="col-md-6 mt-4 mb-5">
+                    <label>
+                        2 description for Gents Blue Lightweight Trainers
+                    </label>
+                    <div class="row mt-4">
+                        <img src="../img/Client thumb.svg" alt="">
+                        <div class="col">
+                            <p id="f-green">John Doe</p>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="additional" role="tabpanel" aria-labelledby="additional-tab">ddddd</div>
+
+            <div class="tab-pane fade active show" id="review" role="tabpanel" aria-labelledby="review-tab">
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <label>
+                            2 reviews for Gents Blue Lightweight Trainers
+                        </label>
+                        <div class="row mt-4">
+                            <img src="../img/Client thumb.svg" alt="">
+                            <div class="col">
+                                <p id="f-green">John Doe</p>
+                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 bg-light p-4 mb-5">
+                        <form>
+                            <h3 id="f-green">Add a review</h3>
+                            <p>Your email address will not be published. Required fields are marked *</p>
+
+                            <div class="d-flex align-items-center">
+                                <div class="mr-3 p-0 m-0">Your rating:</div>
+                                <div>
+                                    <ul class="rate-area p-0 m-0">
+                                        <input type="radio" id="5-star" name="rating" value="5" />
+                                        <label for="5-star" title="Amazing">5 stars</label>
+                                        <input type="radio" id="4-star" name="rating" value="4" />
+                                        <label for="4-star" title="Good">4 stars</label>
+                                        <input type="radio" id="3-star" name="rating" value="3" />
+                                        <label for="3-star" title="Average">3 stars</label>
+                                        <input type="radio" id="2-star" name="rating" value="2" />
+                                        <label for="2-star" title="Not Good">2 stars</label>
+                                        <input type="radio" id="1-star" name="rating" value="1" />
+                                        <label for="1-star" title="Bad">1 star</label>
+
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="inputAddress">Your review <span id="f-green">*</span></label>
+                                <textarea type="text" class="form-control" rows="5" id="inputAddress"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAddress2">Name <span id="f-green">*</span></label>
+                                <input type="text" class="form-control" id="inputAddress2">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAddress2">Email <span id="f-green">*</span></label>
+                                <input type="text" class="form-control" id="inputAddress3">
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="form-check ali">
+                                    <input class="form-check-input" style="width: 1rem;" type="checkbox" id="gridCheck">
+                                    <label class="form-check-label" for="gridCheck">
+                                        Save my name, email, and website in this browser for the next time I comment.
+                                    </label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn m-3" style="border-radius: 20px; background-color: #20D3C2; color: white;">SUBMIT</button>
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">ab</div>
+        </div>
+
+    </div>
+    <!-- section 3 tabs product page -->
+    <!-- section 4 banner product page -->
+    <div class="row gap justify-content-center py-5 productnav-dark">
+
+        <button class="col-md-2 card p-0 m-2 hh-hover hh-fade">
+            <div class="d-flex">
+                <div class="col-md-3 d-flex align-items-center m-1 p-0">
+                    <img src="img/Group 1156.svg" alt="">
+                </div>
+                <div class="col-md-9 ml-n3 my-2">
+                    <h5 class="card-title text-left">Free shipping</h5>
+                    <p class="card-text text-left">For a local customer, we provide free shipping facility</p>
+                </div>
+            </div>
+        </button>
+
+        <button class="col-md-2 card p-0 m-2 hh-hover hh-fade">
+            <div class="d-flex">
+                <div class="col-md-3 d-flex align-items-center m-1 p-0">
+                    <img src="img/24 icon.svg" alt="">
+                </div>
+                <div class="col-md-9 ml-n3 my-2">
+                    <h5 class="card-title text-left">24/7 support</h5>
+                    <p class="card-text text-left">For any inquiry, we are available 24 hours every day</p>
+                </div>
+            </div>
+        </button>
+
+        <button class="col-md-2 card p-0 m-2 hh-hover hh-fade">
+            <div class="d-flex">
+                <div class="col-md-3 d-flex align-items-center m-1 p-0">
+                    <img src="img/payment icon.svg" alt="">
+                </div>
+                <div class="col-md-9 ml-n3 my-2">
+                    <h5 class="card-title text-left">Online payment</h5>
+                    <p class="card-text text-left">You can pay quickly and easily with our online payment system</p>
+                </div>
+            </div>
+        </button>
+
+        <button class="col-md-2 card p-0 m-2 hh-hover hh-fade">
+            <div class="d-flex">
+                <div class="col-md-3 d-flex align-items-center m-1 p-0">
+                    <img src="img/Outline.svg" alt="">
+                </div>
+                <div class="col-md-9 ml-n3 my-2">
+                    <h5 class="card-title text-left">Fast delivery</h5>
+                    <p class="card-text text-left">We understand your urgency and we deliver in a fast way</p>
+                </div>
+            </div>
+        </button>
+    </div>
+    <!-- section 4 banner product page -->
+    <!-- section 5 also like product page--------------------start -->
+    <div class="container ">
+        <h2 class="d-flex justify-content-center mt-5">YOU MAY <span id="f-green" class="ml-3">ALSO LIKE</span></h2>
+    </div>
+    <div class="container d-flex justify-content-center pt-4"><img src="img/zikzak.svg" alt=""></div>
+
+
+    <div class="container  mt-5 my-4">
+        <!--Carousel Wrapper-->
+        <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
+
+            <!--Controls-->
+            <a class="carousel-control-prev ml-n5" href="#multi-item-example" style="opacity:1;" data-slide="prev">
+                <span><img src="img/Prev btn.svg" alt="" class="prev-button"></span>
+            </a>
+            <a class="carousel-control-next mr-n5" href="#multi-item-example" style="opacity:1;" data-slide="next">
+                <span><img src="img/Next btn.svg" class="next-button" alt=""></span>
+            </a>
+            <!--/.Controls-->
+            <!--Indicators-->
+            <ol class="carousel-indicators">
+                <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+                <li data-target="#multi-item-example" data-slide-to="1"></li>
+            </ol>
+            <!--/.Indicators-->
+            <!--Slides-->
+            <div class="carousel-inner" role="listbox">
+
+                <!--First slide-->
+                <div class="carousel-item active ">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ProductCard Id="20"
+                                         Picture="../img/hat.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="22"
+                                         Picture="../img/skirt.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="23"
+                                         Picture="../img/longdress.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="24"
+                                         Picture="../img/sarafon.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                    </div>
+                </div>
+                <!--/.First slide-->
+                <!--Second slide-->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ProductCard Id="25"
+                                         Picture="../img/sarafon.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="26"
+                                         Picture="../img/hat.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="27"
+                                         Picture="../img/longdress.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="28"
+                                         Picture="../img/sarafon.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                    </div>
+                </div>
+                <!--/.Second slide-->
+            </div>
+            <!--/.Slides-->
+        </div>
+        <!--/.Carousel Wrapper-->
+    </div>
+
+
+    <br>
+    <div class="container">
+        <h2 class="d-flex justify-content-center mt-5">RELATED <span id="f-green" class="ml-3">PRODUCTS</span></h2>
+    </div>
+    <div class="container d-flex justify-content-center pt-4"><img src="img/zikzak.svg" alt=""></div>
+
+
+    <div class="container  mt-5 my-4">
+        <!--Carousel Wrapper-->
+        <div id="multi-item-example2" class="carousel slide carousel-multi-item" data-ride="carousel">
+
+            <!--Controls-->
+            <a class="carousel-control-prev ml-n5" href="#multi-item-example2" style="opacity:1;" data-slide="prev">
+                <span><img src="img/Prev btn.svg" alt="" class="prev-button"></span>
+            </a>
+            <a class="carousel-control-next mr-n5" href="#multi-item-example2" style="opacity:1;" data-slide="next">
+                <span><img src="img/Next btn.svg" class="next-button" alt=""></span>
+            </a>
+            <!--/.Controls-->
+            <!--Indicators-->
+            <ol class="carousel-indicators">
+                <li data-target="#multi-item-example2" data-slide-to="0" class="active"></li>
+                <li data-target="#multi-item-example2" data-slide-to="1"></li>
+
+            </ol>
+            <!--/.Indicators-->
+            <!--Slides-->
+            <div class="carousel-inner" role="listbox">
+
+                <!--First slide-->
+                <div class="carousel-item active ">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ProductCard Id="29"
+                                         Picture="../img/iceshoes.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="30"
+                                         Picture="../img/womanshoes.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="31"
+                                         Picture="../img/manshoes.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="32"
+                                         Picture="../img/iceshoes.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                    </div>
+                </div>
+                <!--/.First slide-->
+                <!--Second slide-->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ProductCard Id="33"
+                                         Picture="../img/womanshoes.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="34"
+                                         Picture="../img/womanshoes.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="35"
+                                         Picture="../img/manshoes.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="36"
+                                         Picture="../img/manshoes.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                    </div>
+                </div>
+                <!--/.Second slide-->
+            </div>
+            <!--/.Slides-->
+        </div>
+        <!--/.Carousel Wrapper-->
+    </div>
+    <!-- section 5 also like product page--------------------end -->
+    <!-- section 6 subscribe product page -->
+    <br>
+    <div class="product-bar-gray p-5 mb-5 mt-5">
+        <div class="container">
+
+            <div class="col-md-5">
+                <h2 class=" mt-5">SUBSCRIBE <span id="f-green" class="ml-3">NOW</span></h2>
+
+                <p class="mb-4">
+                    Signup for awesome news about our new products and
+                    know our special discounts on products.
+                </p>
+
+                <div class="input-group input-group-rounded prod-input">
+                    <input class="input-group-field text-left" type="text" placeholder="Enter email address" style="width: 80%;">
+                    <div class="input-group-button">
+                        <input type="submit" class="button secondary product-bg-green" value="Subscribe" style="width: 100%; color: white;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- section 6 subscribe product page -->
+}
+
+@code{
+
+        [Parameter]
+        public string Id { get; set; }
+
+
+        public ProductModel product { get; set; } = null;
+        public string customerId { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+
+            if (ProductService.Products == null)
+            {
+                await ProductService.GetProductsAsync();
+            }
+            product = ProductService.Products.FirstOrDefault(p => p.Id == Int32.Parse(Id));
+            customerId = await LocalStorage.GetItemAsync<string>("customerId");
+        }
+
+
+        private async Task AddToCart()
+        {
+            product = ProductService.Products.FirstOrDefault(p => p.Id == Int32.Parse(Id));
+            ShoppingCartModel shoppingCart = new ShoppingCartModel()
+            {
+                ProductId = product.Id,
+                ProductName = product.ProductName,
+                QuantityByUser = product.QuantityPerUnit,
+                Price = product.Price,
+                //customerId is set to 5(or any) just to be able to place the order FOR NOW!!
+                //We can create a user as a guest to save the orders that is placed without account.
+                CustomerId = Int32.Parse(customerId)
+        };
+
+        await CartService.AddToCart(shoppingCart);
+    }
+
+    private async Task<int> GetProductCount()
+    {
+        var cart = await LocalStorage.GetItemAsync<List<ProductModel>>("cart");
+        return cart != null ? cart.Count : 0;
+    }
+
+    //increment decrement functions
+    private int qty { get; set; } = 0;
+    private void Inc()
+    {
+        qty = qty + 1;
+    }
+    private void Dec()
+    {
+        if (qty > 0)
+            qty = qty - 1;
+    }
+
+
+    private async Task AddToCompare()
+    {
+
+        CompareModel compareList = new CompareModel()
+        {
+            Id = product.Id,
+            ProductName = product.ProductName,
+            Price = product.Price,
+            Picture = ""
+        };
+
+        await ProductService.AddToCompare(compareList);
+    }
+
+    //add to compare
+    private async Task AddToWish()
+    {
+
+        DataModel wishList = new DataModel()
+        {
+            Id = product.Id,
+            ProductName = product.ProductName,
+            Price = product.Price,
+
+        };
+
+        await ProductService.AddToWish(wishList);
+    }
+
+    }

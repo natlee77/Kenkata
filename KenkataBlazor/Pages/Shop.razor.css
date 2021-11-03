@@ -1,0 +1,73 @@
+﻿
+/*<!-- Grid system-------------------start-- >*/
+
+#shop-grid-system .container {
+    display: grid;
+    grid-template-columns: 25% 75%;
+    align-items: center;     
+    justify-content: center; 
+}
+#left {
+    border: 1px solid green;
+    
+}
+#right {     
+    grid-template-columns: 1fr 1fr 1fr;    
+}
+@media (max-width:768px ) {
+    #right {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #shop-grid-system .container {
+        grid-template-columns: 33% 66%;
+    }
+
+    .page-item {
+        border: 1px solid transparent;
+    }
+
+        .page-item.active .page-link {
+            color: #20D3C2;
+        }
+
+        .page-item.disabled .page-link {
+            pointer-events: none;
+            cursor: auto;
+        }
+}
+    /*<!-- Grid system---------------------end-- >*/     
+    /*-- flyttad from app.css--*/
+.prod-square {
+    width: 65px;
+    height: 65px;
+    background-color: #EEEEEE;
+    border-radius: 8px;
+}
+
+.f-green {
+        color: #20D3C2;
+}
+
+.shop-rectangle {
+    background-color: #292F51;
+    border-radius: 8px;
+}
+
+.a-hover a {
+    color: white;
+    text-decoration: none;
+}
+
+.a-hover a:hover {
+    color: #20D3C2;
+}
+
+.a-hover a:active {
+    color: #20D3C2;
+}
+
+#page-navigation li, a {
+    border: none !important
+}

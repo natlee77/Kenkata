@@ -1,0 +1,217 @@
+﻿@page "/compare"
+
+@inject IProductService ProductService
+@inject IJSRuntime JSRuntime
+@inject ILocalStorageService LocalStorage
+@inject ICartService CartService
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService _localStorage
+
+<main>
+    <div class="container-bg-banner">
+        <Container>
+            <Row Class="d-flex justify-content-between">
+                <Column>
+                    <Paragraph Class="fs-3 mt-5 mb-5" id="theme-blue-text">Compare</Paragraph>
+                </Column>
+                <Column Class="fs-4">
+                    <Paragraph Alignment="TextAlignment.Right" Class="text-white mt-5 mb-5"><span id="theme-blue-text">Home</span> /Compare</Paragraph>
+                </Column>
+            </Row>
+        </Container>
+    </div>
+
+
+    <Container>
+        @*left*@
+        <Column ColumnSize="ColumnSize.Is12.Is2.OnTablet.Is2.OnDesktop">
+            
+        </Column>
+        @*right*@
+        <Column ColumnSize="ColumnSize.Is12.Is10.OnTablet.Is10.OnDesktop">        
+
+        @if (compareList==null || compareList.Count <= 0)
+        {
+            <h2 class="container mt-5 d-flex justify-content-center">Your <span class="wishtext-color ml-2 mr-2"> compare list </span> is empty!</h2>
+        }
+        else
+        {
+            <Container Class="compareCard mt-5">
+                <Row Gutter="(32, 32)">
+                    @foreach (var product in compareList  )
+                    {
+                    <Column ColumnSize="ColumnSize.Is4">
+                        <button @onclick="() => RemoveCard(product)" style="width:100%; height:51px;" class="wishlistbtn d-flex btn">
+                            <img src="./img/Close icon.svg" />
+                            <img src="./img/Close icon-color.svg" />
+                            <p class="ml-3" style="margin:0;">Remove item</p>
+
+                        </button>
+
+                        <ProductCard Id="product.Id"
+                                     Name="@product.ProductName"
+                                     Picture="../img/Product thumb watch.svg"
+                                     Category="Shirt"
+                                     OldPrice="@product.Price.ToString()"
+                                     Price="@product.Price" />
+
+
+                        <Column ColumnSize="ColumnSize.IsAuto" Class=" mt-3  align-items-center " Style="font-size:20px;  ">
+                            @product.ProductName
+                        </Column>
+                        <Column ColumnSize="ColumnSize.IsAuto" Class="     row justify-content-between  ml-1 mr-1 " style="color: #20D3C2; font-size:20px;">
+                            <div class="ml-2">
+                                <span class="fa fa-star" id="f-green"></span>
+                                <span class="fa fa-star" id="f-green"></span>
+                                <span class="fa fa-star" id="f-green"></span>
+                                <span class="fa fa-star" id="f-green"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+                        </Column>
+                        <Column ColumnSize="ColumnSize.IsAuto" Class="  ml-2 " style="color: #20D3C2; font-size:20px; font-weight: bold">
+                            $ @product.Price
+                        </Column>
+                        
+
+                       
+                        <Column ColumnSize="ColumnSize.IsAuto" Class="p-0 mt-3 mt-sm-0 ml-sm-3">
+                            <Button @onclick="AddToCart" class="btn-rounded-blue text-white prodcard-addtocart mt-3"><i class="fas fa-shopping-cart" /> Add to cart</Button>
+                        </Column>
+                        <Column ColumnSize="ColumnSize.IsAuto" Class="p-0 mt-3 mt-sm-0 ml-sm-3">
+                            instock
+                        </Column>
+                        <Column ColumnSize="ColumnSize.IsAuto" Class="p-0 mt-3 mt-sm-0 ml-sm-3">
+                            brand
+                        </Column>
+                        <Column ColumnSize="ColumnSize.IsAuto" Class="p-0 mt-3 mt-sm-0 ml-sm-3">
+                            color
+                        </Column>
+                    </Column>
+
+                    }
+                </Row>
+            </Container>
+        }
+        </Column>
+    </Container>
+
+
+
+    <!--<section>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th> AVAILABILITY</th>
+                    <th>BRAND</th>
+                    <th>COLOR </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ProductService.Products != null)
+                {
+                    @foreach (var product in ProductService.Products)
+
+                    {-->
+                        @*
+                            <tr>
+                                <td>@product.Id</td>
+                                <td>@product.ProductName</td>
+                                <td>@product.ProductDescription</td>
+                                <td>@product.Price</td>
+                            </tr>*@
+                    <!--}
+
+                }
+                else
+                {
+                    <div class="w-100 text-center mb-5">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                }
+            </tbody>
+        </table>
+
+    </section>-->
+
+</main>
+
+
+
+
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    public ProductModel product { get; set; }
+    private IEnumerable<ProductModel> products { get; set; }
+    private List<CompareModel> compareList { get; set; } = new List<CompareModel>();
+    private List<ShoppingCartModel> cart { get; set; }
+    private  CompareModel  compareModel { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        product = new ProductModel();
+        cart = await _localStorage.GetItemAsync<List<ShoppingCartModel>>("cart");
+        compareList = await _localStorage.GetItemAsync<List<CompareModel>>("compare");
+    }
+    //--------------------Product , hämta from Database
+    private async Task<ProductModel> GetProductAsync(int id)
+    {
+        product = await Http.GetFromJsonAsync<ProductModel>(" /api/Products/{id}");
+        return product;
+    }
+    //--------------add to compare
+    private async Task AddToCompare()    {
+
+        CompareModel compareList = new CompareModel()
+        {
+            Id = product.Id,
+            ProductName = product.ProductName,
+            Price = product.Price,
+            Picture = ""
+        };
+
+        await ProductService.AddToCompare(compareList);
+    }
+    private void RemoveCard(CompareModel model)
+    {
+        if(new List<CompareModel>() != null)
+        {
+            compareList.Remove(model);
+            ProductService.DeleteCompareItem(model);
+            new List<CompareModel>();
+        }
+
+    }
+    //-------------------add to cart
+    private async Task AddToCart()
+    {
+        ShoppingCartModel shoppingCart = new ShoppingCartModel()
+        {
+            ProductId = product.Id,
+            ProductName = product.ProductName,
+            Price = product.Price,
+            QuantityByUser = 1,
+            //customerId is set to 5(or any) just to be able to place the order FOR NOW!!
+            //We can create a user as a guest to save the orders that is placed without account.
+            CustomerId = 5
+        };
+        await CartService.AddToCart(shoppingCart);
+    }
+
+
+
+
+}
+
+
+
+
+
+

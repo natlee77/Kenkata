@@ -1,0 +1,18 @@
+﻿#small-box {
+    height: 15.9375em;
+    width: auto;
+    background-color: #CCCCCC;
+
+}
+
+#rectangle {
+    height: 33.4375em;
+    width: auto;
+    background-color: #CCCCCC;
+}
+
+#large-box {
+    height: 33.875em;
+    width: auto;
+    background-color: #CCCCCC;
+}

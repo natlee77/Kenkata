@@ -1,0 +1,793 @@
+﻿@page "/"
+@inject IProductService ProductService
+<main>
+
+    @if (product == null)//&& categories == null
+    {
+        <div class="w-100 text-center mb-5">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    }
+    @*Render after*@
+    else
+    {
+        <!-- section 1 -->
+        <section id="shopisfun">
+            <div class="container">
+                <!-- left side -->
+                <div id="banner" class="reklam mr-4">
+                    <div id="text" class="title">
+                        <h1>Shopping is </h1>
+                        <h2>MORE FUN</h2>
+                        <p>The Internet never closes.You can shop anytime online 24 hours a day 7 days a week. Online shopping is perfect for night owls or anyone who is just too busy to make a trip to the store.</p>
+                    </div>
+                    <NavLink href="/shop"> <button class="btn btn-hov mb-2">SHOP NOW</button></NavLink>
+                </div>
+                <!-- right side -->
+                <div class="logo2women">
+                    <img src="img/banner2women.svg" alt="image">
+                </div>
+
+            </div>
+        </section>
+
+        <!-- section 2 --- reklam banner-->
+        <section id="section2" class=" m-5 mt-5">
+            <div id="fastlink">
+
+                <button id="1" class="btn btn-hov">
+                    <div id="grid-box" class="row">
+                        <div>
+                            <img class="svg   " src="img/1155.svg " alt="image">
+                        </div>
+                        <div class="text">
+                            <h5 style="font-weight: bolder;">Free shipping</h5>
+                            <p>For a local customer , we provide free shipping facility</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button id="2" class="btn btn-hov">
+                    <div id="grid-box" class="row">
+                        <div>
+                            <img class="svg " src="img/24 icon.svg " alt="image">
+                        </div>
+                        <div class="text">
+                            <h5 style="font-weight: bolder;">24/7 support</h5>
+                            <p>For any inquiry,we are available 24 hours every day</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button id="3" class="btn btn-hov">
+                    <div id="grid-box" class="row">
+                        <div>
+                            <img class="svg  " src="img/payment icon.svg " alt="image">
+                        </div>
+                        <div class="text">
+                            <h5 style="font-weight: bolder;">Online payment</h5>
+                            <p>You can pay quickly and easily with our online payment system</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button id="4" class="btn btn-hov">
+                    <div id="grid-box" class="row ">
+                        <div>
+                            <img class="svg " src="img/Outline.svg " alt="image">
+                        </div>
+                        <div class="text ">
+                            <h5 style="font-weight: bolder;">Fast delivery</h5>
+                            <p>We understand your urgency and we deliver in a fast way</p>
+                        </div>
+                    </div>
+                </button>
+
+            </div>
+        </section>
+
+        <!-- section 3 -- Shop  by category-->
+
+        <section id="section3">
+            <div class="container">
+                <div class="grid">
+                    <div id="service-title" class="title  ">
+                        <div>
+                            <h3> SHOP BY  <span id="text-body" class="ml-2"> CATEGORY</span>  </h3>
+
+                        </div>
+                        <div>
+                            <img src="img/Path 44.svg" alt="image">
+                        </div>
+                        <div id="str">
+                            <p>We always try the best product within a fast and reliable way</p>
+                        </div>
+                    </div>
+
+
+                    <div id="men" class="grid-box">
+                        <div class="">
+                            <img style="width: 100%;" src="../img/Product thumb.svg" alt="">
+                        </div>
+                        <div id="category-namn" class="text-start pt-1 pl-3  " style="color: #20D3C2;"> Men </div>
+
+
+                    </div>
+
+                    <div id="women" class="grid-box">
+                        <div class="">
+                            <img style="width: 100%;" src="../img/Product thumb.svg" alt="">
+                        </div>
+                        <div id="category-namn" class="text-start pt-1 pl-3  " style="color: #20D3C2;"> Women </div>
+                    </div>
+
+                    <div id="kids" class="grid-box">
+                        <div class="">
+                            <img style="width: 100%;" src="../img/Product thumb.svg" alt="">
+                        </div>
+                        <div id="category-namn" class="text-start pt-1 pl-3  " style="color: #20D3C2;"> Kids </div>
+                    </div>
+
+                    <div id="hats" class="grid-box">
+                        <div class="">
+                            <img style="width: 100%;" src="../img/Product thumb.svg" alt="">
+                        </div>
+                        <div id="category-namn" class="text-start pt-1 pl-3  " style="color: #20D3C2;"> Hats</div>
+                    </div>
+
+
+                    <div id="shoes" class="grid-box">
+                        <div class="">
+                            <img style="width: 100%;" src="../img/Product thumb.svg" alt="">
+                        </div>
+                        <div id="category-namn" class="text-start pt-1 pl-3  " style="color: #20D3C2;"> Shoes</div>
+                    </div>
+
+                    <div id="sunglasses" class="grid-box">
+                        <div class="">
+                            <img style="width: 100%;" src="../img/Product thumb.svg" alt="">
+                        </div>
+                        <div id="category-namn" class="text-start pt-1 pl-3  " style="color: #20D3C2;"> Sunglasses</div>
+                    </div>
+
+                    <div id="watches" class="grid-box">
+                        <div class="">
+                            <img style="width: 100%;" src="../img/Product thumb.svg" alt="">
+                        </div>
+                        <div id="category-namn" class="text-start pt-1 pl-3  " style="color: #20D3C2;">Wathes</div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- section 5  --- New arrivers---->
+        <section id="section5 " class="container mt-5 mb-5 ">
+
+            <div class="tittle text-center">
+                <div>
+                    <h3 style="font-weight: bold;"> NEW <span id="text-body" class="ml-2 "> ARRIVALS</span> </h3>
+                </div>
+                <div>
+                    <img src="img/Path 44.svg" alt="image">
+                </div>
+                <div id="str">
+                    <p>Check out our latest products from top fashion designers</p>
+                </div>
+            </div>
+
+
+            <!--Carousel Wrapper-->
+            <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
+
+
+                <!--Controls-->
+                <a class="carousel-control-prev" href="#multi-item-example" style="opacity:1;" data-slide="prev">
+                    <span><img src="./img/Prev btn.svg" alt="" class="prev-button"></span>
+
+                </a>
+                <a class="carousel-control-next" href="#multi-item-example" style="opacity:1;" data-slide="next">
+                    <span><img src="./img/Next btn.svg" class="next-button" alt=""></span>
+                </a>
+                <!--/.Controls-->
+                <!--Slides-->
+                <div class="carousel-inner  " role="listbox">
+
+                    <!--First slide-->
+                    <div class="carousel-item active ">
+                        <div class="row ">
+                            <div class="col-md-4">
+                                <ProductCard Id="5"
+                                             Name="@product.ProductName"
+                                             Info="@product.ProductDescription"                                                 
+                                             Category="Placeholder"                                                 
+                                             Price="@product.Price"  
+                                             OldPrice="$120.00"
+                                             Picture="../img/Product thumb watch.svg" />
+
+                            </div>
+                            <div class="col-md-4">
+                                <ProductCard Id="6"
+                                             Name="@product.ProductName"
+                                             Info="@product.ProductDescription"                                                 
+                                             Category="Placeholder"                                                 
+                                             Price="@product.Price"  
+                                             Picture="../img/Product thumb man.svg"
+                                             OldPrice="$120.00" />
+                            </div>
+                            <div class="col-md-4">
+                                <ProductCard Id="7"
+                                             Name="@product.ProductName"
+                                             Info="@product.ProductDescription"                                                 
+                                             Category="Placeholder"                                                 
+                                             Price="@product.Price"  
+                                             Picture="../img/Product thumb.svg"
+                                             OldPrice="$120.00" />
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.First slide-->
+                    <!--Second slide-->
+                    <div class="carousel-item  ">
+                        <div class="row ">
+                            <div class="col-md-4">
+                                <ProductCard Id="8"                                              
+                                             Name="@product.ProductName"
+                                             Info="@product.ProductDescription"                                                 
+                                             Category="Placeholder"                                                 
+                                             Price="@product.Price"  
+                                             Picture="../img/Product thumb dress.svg"
+                                             OldPrice="$120.00" />
+                            </div>
+                            <div class="col-md-4">
+                                <ProductCard Id="9"
+                                             Name="@product.ProductName"
+                                             Info="@product.ProductDescription"                                                 
+                                             Category="Placeholder"                                                 
+                                             Price="@product.Price"  
+                                             Picture="../img/Product thumb jacka.svg"
+                                             OldPrice="$120.00" />
+                            </div>
+                            <div class="col-md-4">
+                                <ProductCard Id="10"
+                                             Name="@product.ProductName"
+                                             Info="@product.ProductDescription"                                                 
+                                             Category="Placeholder"                                                 
+                                             Price="@product.Price"  
+                                             Picture="../img/skirt.svg"
+                                             OldPrice="$120.00" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--/.Second slide-->
+                </div>
+
+                <!--Indicators-->
+                <div>
+                    <ol class="carousel-indicators">
+                        <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+                        <li data-target="#multi-item-example" data-slide-to="1"></li>
+
+                    </ol>
+                </div>
+                <!--/.Indicators-->
+            </div>
+            <!--/.Carousel Wrapper-->
+
+
+
+        </section>
+
+
+        <!--   -- 30%off-->
+        <section id="section4">
+            <div class="container  ">
+                <!-- left side -->
+                <div id="sale" class="pt-5 pb-5 ml-3">
+                    <h1>  30% off  </h1>
+                    <p> FOR NEW CUSTOMER  </p>
+
+                    <NavLink href="/shop">
+                        <button class="btn1 btn-hov"> SHOP NOW </button>
+                    </NavLink>
+                </div>
+
+                <!-- right side -->
+                <div id="textblock" class="reklam">
+                    <div id="text" class="title">
+
+                        <p>It is fun to explore the new trends in fashion and that's easy when you are shopping for clothes.</p>
+                    </div>
+                    <NavLink href="/product">
+                        <button class="btn btn-hov">LEARN MORE</button>
+                    </NavLink>
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <!----------- section 7 -- Featured pproduct -------->
+        <section id="section7" class="container mt-5  ">
+
+            <div class="tittle ">
+                <div>
+                    <h3 style="font-weight: bold;"> FEATURED <span id="text-body" class="ml-2"> PRODUCTS</span> </h3>
+                </div>
+                <div>
+                    <img src="img/Path 44.svg" alt="image">
+                </div>
+                <div id="str">
+                    <p>Check out our monthly featured products from top brands</p>
+                </div>
+            </div>
+
+
+            <!--Carousel Wrapper-->
+            <div id="multi-item-example2" class="carousel slide carousel-multi-item" data-ride="carousel">
+                <!--Controls-->
+                <a class="carousel-control-prev" href="#multi-item-example2" style="opacity:1;" data-slide="prev">
+                    <span><img src="./img/Prev btn.svg" alt="" class="prev-button"></span>
+
+                </a>
+                <a class="carousel-control-next" href="#multi-item-example2" style="opacity:1;" data-slide="next">
+                    <span><img src="./img/Next btn.svg" class="next-button" alt=""></span>
+                </a>
+                <!--/.Controls-->
+                <!--Indicators-->
+                <ol class="carousel-indicators">
+                    <li data-target="#multi-item-example2" data-slide-to="0" class="active"></li>
+                    <li data-target="#multi-item-example2" data-slide-to="1"></li>
+                </ol>
+                <!--/.Indicators-->
+                <!--Slides-->
+                <div class="carousel-inner " role="listbox">
+
+                    <!--First slide-->
+                    <div class="carousel-item  ">
+                        <div class="row ">
+                            <div class="col-md-4">
+
+                                <ProductCard Id="11"
+                                             Picture="../img/Product thumb watch.svg"
+                                             OldPrice="$320.00" />
+                            </div>
+                            <div class="col-md-4">
+                                <ProductCard Id="12"
+                                             Picture="../img/Product thumb women.svg"
+                                             OldPrice="$120.00" />
+                            </div>
+                            <div class="col-md-4">
+                                <ProductCard Id="13"
+                                             Picture="../img/skirt.svg"
+                                             OldPrice="$190.00" />
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.First slide-->
+                    <!--Second slide-->
+
+                    <div class="carousel-item active ">
+                        <div class="row ">
+                            <div class="col-md-4">
+                                <ProductCard Id="14"
+                                             Picture="../img/Product thumb dress.svg"
+                                             OldPrice="$120.00" />
+                            </div>
+                            <div class="col-md-4">
+                                <ProductCard Id="15"
+                                             Picture="../img/Product thumb man.svg"
+                                             OldPrice="$120.00" />
+                            </div>
+                            <div class="col-md-4">
+                                <ProductCard Id="3"
+                                             Picture="../img/Product thumb.svg"
+                                             OldPrice="$120.00" />
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.Second slide-->
+                </div>
+                <!--/.Slides-->
+
+            </div>
+            <!--/.Carousel Wrapper-->
+
+        </section>
+
+
+        <!-- section 6  -- FlashSale-->
+        <section id="section6">
+            <div class="container mt-5 ">
+                <!-- left side -->
+                <div id="flashsale" class="justify-content-center  pt-5 pb-5 ml-3">
+                    <h1 class=""> FLASH   </h1>
+                    <h1 class="">   SALE </h1>
+                    <p> UP TO 50% OFF </p>
+                </div>
+
+                <!-- right side -->
+                <div id="textblock" class="justify-content-center  pt-5 pb-5 ">
+                    <div>
+                        <img class="svg" src="img/Countdown.svg" alt="image">
+                    </div>
+
+                    <NavLink href="/shop">  <button class="btn btn-hov mt-3">SHOP NOW</button></NavLink>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Section 8  Top sellers-->
+        <section id="section-8">
+            <div class="container">
+                <div class="grid mt-5 mb-5 pb-2">
+                    <div id="ts-tittle" class=" text-center">
+                        <div>
+                            <h3 style="font-weight: bold;"> TOP <span id="text-body" class="ml-2 "> SELLERS</span> </h3>
+                        </div>
+                        <div>
+                            <img src="img/Path 44.svg" alt="image">
+                        </div>
+                        <div id="str">
+                            <p>Check out our weekly top sellers in all category</p>
+                        </div>
+
+                    </div>
+
+                    <div id="bexim" class="grid-box">
+                        <div class="status-icon">
+                            <img style="width: 100%; " src="../img/BeximBrand.svg " alt="icon" class="img-fluid">
+                        </div>
+                        
+                            <div>
+                                <ProductCard Id="3"
+                                             Picture="../img/Product thumb top1.svg"
+                                             OldPrice="$120.00" />
+                            </div>
+                        
+                    </div>
+
+                    <div id="lighton" class="grid-box">
+                        
+                            <div>
+                                <ProductCard Id="15"
+                                             Picture="../img/Product thumb top2.svg"
+                                             OldPrice="$220.00" />
+                                <div class="status-icon">
+                                    <img style="width: 100%; " src="../img/lighton.svg" alt="icon" class="img-fluid">
+                                </div>
+                            </div>
+                       
+                    </div>
+
+                    <div id="rosimo" class="grid-box">
+                        <div class="status-icon">
+                            <img style="width: 100%; " src="../img/rosimo.svg" alt="icon" class="img-fluid">
+                        </div>
+                        <ProductCard Id="17"
+                                     Picture="../img/Product thumb top3.svg"
+                                     OldPrice="$220.00" />
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+
+        <!-- Section 9  feedback-->
+        <section id="section-9">
+            <div class="border-square">
+
+                <div id="multi-item-example-9" class="carousel slide carousel-multi-item container" data-ride="carousel">
+
+                    <!--Controls-->
+                    <a class="carousel-control-prev" href="#multi-item-example-9" style="opacity:1;" data-slide="prev">
+                        <span><img src="./img/Prev btn.svg" alt="" class="prev-button"></span>
+
+                    </a>
+                    <a class="carousel-control-next" href="#multi-item-example-9" style="opacity:1;" data-slide="next">
+                        <span><img src="./img/Next btn.svg" class="next-button" alt=""></span>
+                    </a>
+                    <!--/.Controls-->
+                    <!--Indicators-->
+                    <ol class="carousel-indicators">
+                        <li data-target="#multi-item-example-9" data-slide-to="0" class="active"></li>
+                        <li data-target="#multi-item-example-9" data-slide-to="1"></li>
+
+
+                    </ol>
+                    <!--/.Indicators-->
+                    <!--Slides-->
+                    <div class="carousel-inner" role="listbox">
+
+                        <!--First slide-->
+                        <div class="carousel-item active ">
+
+                            <div class="d-flex text-center">
+                                <div class="quote-item">
+                                    <img src="./img/Quote.svg" alt="image" />
+                                    <div class="mt-5 quote-square"></div>
+                                    <img src="./img/Group 73.svg" alt="image" class="mt-5" />
+                                    <div class="mt-4">
+                                        <h4 style="color: #20D3C2; font-size:18px;">JOHNNY WESMULLAR</h4>
+                                        <p style="color: #FFFFFF; font-size:14px;" class="mt-3">CEO, Biotech Inc.</p>
+                                    </div>
+                                    <div class="">
+                                        <p style="color: #FFFFFF;" class="mt-5">
+                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                                            and scrambled it to make a type specimen book. It has survived not only five centuries.
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!--Second slide-->
+                        <div class="carousel-item">
+
+                            <div class="d-flex text-center">
+                                <div class="quote-item">
+                                    <img src="./img/Quote.svg" alt="image" />
+                                    <div class="mt-5 quote-square"></div>
+                                    <img src="./img/Group 73.svg" alt="image" class="mt-5" />
+                                    <div class="mt-4">
+                                        <h4 style="color: #20D3C2; font-size:18px;">JOHNNY WESMULLAR</h4>
+                                        <p style="color: #FFFFFF; font-size:14px;" class="mt-3">CEO, Biotech Inc.</p>
+                                    </div>
+                                    <p style="color: #FFFFFF;" class="mt-5">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                                        and scrambled it to make a type specimen book. It has survived not only five centuries.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!--  Section 10    LAtest blog-->
+        <section id="section-10" class="container ">
+            <div class="info">
+                <div>
+                    <h3 style="font-weight: bold;"> LATEST <span id="text-body" class="ml-2"> BLOG</span> </h3>
+                </div>
+                <div>
+                    <img src="img/Path 44.svg" alt="image">
+                </div>
+                <div>
+                    <p>Read our latest posts about our events and trending news</p>
+                </div>
+            </div>
+
+            <div id="multi-item-example-4" class="carousel slide carousel-multi-item" data-ride="carousel">
+
+                <!--Controls-->
+                <a class="carousel-control-prev" href="#multi-item-example-4" style="opacity:1;" data-slide="prev">
+                    <span><img src="./img/Prev btn.svg" alt="" class="prev-button"></span>
+
+                </a>
+                <a class="carousel-control-next" href="#multi-item-example-4" style="opacity:1;" data-slide="next">
+                    <span><img src="./img/Next btn.svg" class="next-button" alt=""></span>
+                </a>
+                <!--/.Controls-->
+                <!--Indicators-->
+                <ol class="carousel-indicators">
+                    <li data-target="#multi-item-example-4" data-slide-to="0" class="active"></li>
+                    <li data-target="#multi-item-example-4" data-slide-to="1"></li>
+
+
+                </ol>
+                <!--/.Indicators-->
+                <!--Slides-->
+                <div class="carousel-inner" role="listbox">
+
+                    <!--First slide-->
+                    <div class="carousel-item active ">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="homepage-square1"></div>
+                                <div class="col-md-6">
+                                    <div class="homepage-square2">
+                                        <div class="">
+                                            <div class="homepage-rectangular text-center text-white">
+                                                <h1 class="m-0" style="font-size: 36px;">29</h1>
+                                                <h6 class="mt-2" style="font-size: 16px;">MAR</h6>
+                                            </div>
+                                            <div class="ml-4" style="line-height: 1.5rem;">
+                                                <div class="text-white mt-4">
+                                                    <span style="font-size: 14px;">By </span><NavLink href="/blog" style="color:white; font-size:14px; text-decoration:underline">Adam Moore</NavLink>
+                                                </div>
+                                                <div>
+                                                    <h5 class="mt-2" style="color: #20D3C2; font-size: 16px; line-height: 1.6rem; width: 220px ;">A beautiful scenery in the world we are missing</h5>
+                                                </div>
+                                                <div class="d-flex mt-3" style="font-size: 14px;">
+                                                    <div class="border text-white pl-2 pr-2">Travel</div>
+                                                    <div class="border text-white ml-3 pl-2 pr-2">Fashion</div>
+                                                </div>
+                                                <button class="homepage-btn mt-3">Read More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="homepage-square1"></div>
+                                <div class="col-md-6">
+                                    <div class="homepage-square2">
+                                        <div class="">
+                                            <div class="homepage-rectangular text-center text-white">
+                                                <h1 class="m-0" style="font-size: 36px;">18</h1>
+                                                <h6 class="mt-2" style="font-size: 16px;">JUL</h6>
+                                            </div>
+                                            <div class="ml-4" style="line-height: 1.5rem;">
+                                                <div class="text-white mt-4">
+                                                    <span style="font-size: 14px;">By </span><NavLink href="/blog" style="color:white; font-size:14px; text-decoration:underline">Jonathan Doe</NavLink>
+                                                </div>
+                                                <div>
+                                                    <h5 class="mt-2" style="color: #20D3C2; font-size: 16px; line-height: 1.6rem; width: 220px ;">We love our country, we love our peoples like ourself</h5>
+                                                </div>
+                                                <div class="d-flex mt-3" style="font-size: 14px;">
+                                                    <div class="border text-white pl-2 pr-2">Travel</div>
+                                                    <div class="border text-white ml-3 pl-2 pr-2">Fashion</div>
+                                                </div>
+                                                <button class="homepage-btn mt-3">Read More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!--/.First slide-->
+                    <!--Second slide-->
+                    <div class="carousel-item">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="homepage-square1"></div>
+                                <div class="col-md-6">
+                                    <div class="homepage-square2">
+                                        <div class="">
+                                            <div class="homepage-rectangular text-center text-white">
+                                                <h1 class="m-0" style="font-size: 36px;">29</h1>
+                                                <h6 class="mt-2" style="font-size: 16px;">MAR</h6>
+                                            </div>
+                                            <div class="ml-4" style="line-height: 1.5rem;">
+                                                <div class="text-white mt-4">
+                                                    <span style="font-size: 14px;">By </span><NavLink href="/blog" style="color:white; font-size:14px; text-decoration:underline">Adam Moore</NavLink>
+                                                </div>
+                                                <div>
+                                                    <h5 class="mt-2" style="color: #20D3C2; font-size: 16px; line-height: 1.6rem; width: 220px ;">A beautiful scenery in the world we are missing</h5>
+                                                </div>
+                                                <div class="d-flex mt-3" style="font-size: 14px;">
+                                                    <div class="border text-white pl-2 pr-2">Travel</div>
+                                                    <div class="border text-white ml-3 pl-2 pr-2">Fashion</div>
+                                                </div>
+                                                <button class="homepage-btn mt-3">Read More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="homepage-square1"></div>
+                                <div class="col-md-6">
+                                    <div class="homepage-square2">
+                                        <div class="">
+                                            <div class="homepage-rectangular text-center text-white">
+                                                <h1 class="m-0" style="font-size: 36px;">18</h1>
+                                                <h6 class="mt-2" style="font-size: 16px;">JUL</h6>
+                                            </div>
+                                            <div class="ml-4" style="line-height: 1.5rem;">
+                                                <div class="text-white mt-4">
+                                                    <span style="font-size: 14px;">By </span><NavLink href="/blog" style="color:white; font-size:14px; text-decoration:underline">Jonathan Doe</NavLink>
+                                                </div>
+                                                <div>
+                                                    <h5 class="mt-2" style="color: #20D3C2; font-size: 16px; line-height: 1.6rem; width: 220px ;">We love our country, we love our peoples like ourself</h5>
+                                                </div>
+                                                <div class="d-flex mt-3" style="font-size: 14px;">
+                                                    <div class="border text-white pl-2 pr-2">Travel</div>
+                                                    <div class="border text-white ml-3 pl-2 pr-2">Fashion</div>
+                                                </div>
+                                                <button class="homepage-btn mt-3">Read More</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- Section 11-->
+        <section id="section-11">
+            <div class="product-bar-gray subscribe-class">
+                <div class="container">
+                    <div class="d-flex justify-content-between">
+                        <div class="col-md-5">
+                            <h2 class=" mt-5" style="font-weight:bold; line-height:28px">SUBSCRIBE <span id="f-green" class="ml-2">NOW</span></h2>
+                            <p class="mb-4">
+                                Signup for awesome news about our new products and
+                                know our special discounts on products.
+                            </p>
+                            <div class="input-group input-group-rounded prod-input">
+                                <input class="input-group-field text-left" type="text" placeholder="Enter email address" style="width: 80%;">
+                                <div class="input-group-button">
+                                    <input type="submit" class="button secondary product-bg-green mb-5" value="Subscribe" style="width: 100%; color: white;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5" style=" background-color: #C8C8C8;">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    }
+</main>
+
+
+
+
+
+
+
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+    private string selectedSlide = "2";
+
+
+    //--------------------Product , hämta from Database
+
+    public ProductModel product { get; set; }
+    private IEnumerable<ProductModel> products { get; set; }
+    private async Task<ProductModel> GetProductAsync(int id)
+    {
+        product = await Http.GetFromJsonAsync<ProductModel>($"api/Products/{id}");
+        return product;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = new ProductModel();
+
+        // If ID is passed as parameter, do the API call
+        if (Id != 0)
+        {
+            await GetProductAsync(Id);
+        }
+    }
+}

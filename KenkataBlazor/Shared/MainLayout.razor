@@ -1,0 +1,330 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+@inject ILocalStorageService LocalStorage
+
+<header>
+    <nav id="navbar-top" class="navbar-top-fixed">
+        <Container>
+            <Row Class="d-flex w-100 justify-content-between">
+                <Column ColumnSize="ColumnSize.Is12.OnMobile.Is6.OnTablet.Is2.OnWidescreen" Class="align-self-center">
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-primary border-0 d-lg-none m-1 bg-white" type="button" id="navSidebarCollapse" aria-expanded="false">
+                            <i class="fas fa-bars" id="theme-blue-text"></i>
+                        </button>
+                        <NavLink href="/" class="w-25 d-flex d-lg-none ml-1 mr-1"><img src="../img/Logo alt.svg" alt="logotype" class="img-fluid"></NavLink>
+                        <div class="dropdown ml-2 mr-2">
+                            <button class="btn dropdown-toggle border-0 p-0" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                USD
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <a class="dropdown-item" href="#">SEK</a>
+                                <a class="dropdown-item" href="#">NOK</a>
+                                <a class="dropdown-item" href="#">DKK</a>
+                                <a class="dropdown-item" href="#">EUR</a>
+                            </div>
+                        </div>
+                        <div class="dropdown ml-2 mr-2">
+                            <button class="btn dropdown-toggle border-0 p-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ENG
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">SWE</a>
+                                <a class="dropdown-item" href="#">NO</a>
+                                <a class="dropdown-item" href="#">DK</a>
+                            </div>
+                        </div>
+                    </div>
+                </Column>
+                <Column ColumnSize="ColumnSize.IsAuto" Class="p-0 align-self-center">
+                    <div class="d-flex">
+                        <div class="d-none d-sm-flex align-items-center">
+                            <NavLink class="nav" href="#">Newsletter</NavLink>
+                            <a class="line m"></a>
+                            <NavLink class="nav" href="contact">Contact us</NavLink>
+                            <a class="line"></a>
+                            <NavLink class="nav" href="#">FAQs</NavLink>
+                            <a class="line"></a>
+                        </div>
+                        <div class="d-none d-lg-flex align-items-center">
+                            <NavLink href="#"><i class="fab fa-facebook-f mr-3 nav"></i></NavLink>
+                            <NavLink href="#"><i class="fab fa-twitter mr-3 nav"></i></NavLink>
+                            <NavLink href="#"><i class="fab fa-google-plus-g mr-3 nav"></i></NavLink>
+                            <NavLink href="#"><i class="fab fa-instagram mr-3 nav"></i></NavLink>
+                            <NavLink href="#"><i class="fab fa-youtube nav"></i></NavLink>
+                        </div>
+                    </div>
+                </Column>
+            </Row>
+        </Container>
+    </nav>
+
+    <div class="nav-sidebar-wrapper position-relative d-flex flex-column w-100 align-items-stretch collapse" id="navSidebarCollapse">
+        <div id="nav-sidebar" class="position-relative">
+            <div class="border-bottom">
+                <Container Class="">
+                    <Button class="d-none"></Button>
+                    <nav id="navbar-section2" class="navbar mt-4 mb-4 p-0">
+                        @*<div class="container justify-content-between   ">*@
+                        <Row Class="d-flex justify-content-around flex-fill align-items-center">
+                            <Column ColumnSize="ColumnSize.IsAuto" Class="p-0 d-none d-lg-flex ml-3">
+                                    <NavLink href="/"><img src="../img/Logo.png" alt="logotype"></NavLink>
+                            </Column>
+                            <Column ColumnSize="ColumnSize.IsAuto.OnMobile.Is5.OnWidescreen">
+                                <div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control search-form-control rcorners1" aria-label="Text input with 2 dropdown buttons" placeholder="Search products...">
+                                        <div class="dropdown d-none d-lg-flex">
+                                            <button type="button" class="btn dropdown-toggle   border rcorners2  " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Categories
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">Men</a>
+                                                <a class="dropdown-item" href="#">Woman</a>
+                                                <a class="dropdown-item" href="#">Kids</a>
+                                                <a class="dropdown-item" href="#">Shoes</a>
+                                                <a class="dropdown-item" href="#">Hats</a>
+                                                <a class="dropdown-item" href="#">Sunglasses</a>
+                                                <a class="dropdown-item" href="#">Watches</a>
+                                            </div>
+                                        </div>
+                                        <button class="btnsearch btn btn-outline-secondary border rcorners3  " aria-expanded="false" type="submit">
+                                            <span><i class="fas fa-search"></i></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </Column>
+                            <Column ColumnSize="ColumnSize.IsAuto" Class="mt-4 mt-lg-0">
+                                <Row Class="align-items-center">
+                                    <Column ColumnSize="ColumnSize.IsAuto" Class="p-1 p-lg-3">
+                                        <NavLink class="" href="account">
+                                            <img class="mr-1 text-dark" src="../img/User icon.svg">
+                                            <span class="d-none d-lg-inline-flex">My account</span>
+                                        </NavLink>
+                                    </Column>
+                                    <Column ColumnSize="ColumnSize.IsAuto" Class="p-1 p-lg-3">
+                                        <NavLink href="/wishlist" class=""><img src="../img/Heart icon.svg"></NavLink>
+                                    </Column>
+                                    <Column ColumnSize="ColumnSize.IsAuto" Class="p-1 p-lg-3">
+                                        <NavLink href="/compare" class=""><img src="../img/Compare icon.svg"></NavLink>
+                                    </Column>
+                                    <Column ColumnSize="ColumnSize.IsAuto" Class="p-1 p-lg-3">
+                                        <NavLink href="/shoppingcart" class=""><img src="../img/Bag icon.svg"></NavLink>
+                                        <a id="k"><CartCount /> $</a>
+                                    </Column>
+                                </Row>
+                            </Column>
+                        </Row>
+                    </nav>
+                </Container>
+            </div>
+            <Container>
+                <Row>
+                    <nav id="navbar-section3">
+                        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center">
+                            <Column ColumnSize="ColumnSize.Is12.OnMobile.IsAuto.OnTablet">
+                                <button class="btn  dropdown-toggle btn-lg border-0 rcorners2 m-0" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span><i class="fas fa-align-left mr-2"></i></span>Browse Categories
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                    <a class="dropdown-item" href="shop">Men</a>
+                                    <a class="dropdown-item" href="shop">Woman</a>
+                                    <a class="dropdown-item" href="shop">Kids</a>
+                                    <a class="dropdown-item" href="shop">Other</a>
+                                </div>
+                            </Column>
+                            <Column ColumnSize="ColumnSize.Is12.OnMobile.IsAuto.OnTablet" Class="p-0">
+                                <NavLink href="/" class="btn">Home</NavLink>
+                            </Column>
+                            <Column ColumnSize="ColumnSize.Is12.OnMobile.IsAuto.OnTablet" Class="p-0">
+                                <div class="dropdown">
+                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Shop
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="shop">Shop 1</a>
+                                        <a class="dropdown-item" href="shop">Shop 2</a>
+                                        <a class="dropdown-item" href="shop">Shop 3</a>
+                                    </div>
+                                </div>
+                            </Column>
+                            <Column ColumnSize="ColumnSize.Is12.OnMobile.IsAuto.OnTablet" Class="p-0">
+                                <div class="dropdown">
+                                    <button class="btn  dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Products
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="product/1">Product 1</a>
+                                        <a class="dropdown-item" href="product/2">Product 2</a>
+                                        <a class="dropdown-item" href="product/3">Product 3</a>
+                                    </div>
+                                </div>
+                            </Column>
+                            <Column ColumnSize="ColumnSize.Is12.OnMobile.IsAuto.OnTablet" Class="p-0">
+                                <div class="dropdown">
+                                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Categories
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="shop">Men</a>
+                                        <a class="dropdown-item" href="shop">Woman</a>
+                                        <a class="dropdown-item" href="shop">Kids</a>
+                                    </div>
+                                </div>
+                            </Column>
+                            <Column ColumnSize="ColumnSize.Is12.OnMobile.IsAuto.OnTablet" Class="p-0">
+                                <div class="dropdown">
+                                    <button class="btn  dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Page
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="shoppingcart">Shopping Cart</a>
+                                        <a class="dropdown-item" href="checkout">Check Out</a>
+                                        <a class="dropdown-item" href="account">My Account</a>
+                                        <a class="dropdown-item" href="wishlist">My Wishlist</a>
+                                        <a class="dropdown-item" href="compare">Compare Products</a>
+                                        <a class="dropdown-item" href="error/404">About us</a>
+                                        <a class="dropdown-item" href="error/404">Portfolie</a>
+                                        <a class="dropdown-item" href="portfolio/details">Portfolie Details</a>
+                                        <a class="dropdown-item" href="blog">Blog</a>
+                                        <a class="dropdown-item" href="blogdetails">Blog Details</a>
+                                        <a class="dropdown-item" href="contact">Contact Us</a>
+                                    </div>
+                                </div>
+                            </Column>
+                            <Column ColumnSize="ColumnSize.Is12.OnMobile.IsAuto.OnTablet" Class="p-0">
+                                <button class="btn">Blog</button>
+                            </Column>
+                            <Column ColumnSize="ColumnSize.Is12.OnMobile.IsAuto.OnTablet" Class="offset-xl-1 p-0 text-center">
+                                <div>
+                                    <button class="btn rcorners3">SPECIAL OFFER</button>
+                                </div>
+                            </Column>
+                        </div>
+                    </nav>
+                </Row>
+            </Container>
+        </div>
+    </div>
+
+
+
+</header>
+
+<div id="overlay">
+    @*Render body*@
+
+    @Body
+
+    @*Render body*@
+
+
+    <footer>
+        <div class="container container-brand mt-5 mb-5">
+            <img src="img/Brand.svg" class="mx-auto d-block img-fluid w-100 pt-5 pb-5">
+        </div>
+        <div class="container-info">
+            <Container>
+                <Row Class="ml-auto mr-auto ml-sm-0 mr-sm-0">
+                    <Column Class="mt-5 mb-5 d-none d-sm-inline" ColumnSize="ColumnSize.Is3">
+                        <img class="img-fluid" src="../img/Logo.svg">
+                        <p class="mt-5 text-white">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent enim quam, ullamcorper vel tellus vitae, tempus fringilla lectus. Donec maximus justo eu nisl convallis iaculis. Aenean laoreet.
+                        </p>
+                        <ul class="list-group list-group-horizontal shadow-none">
+                            <li><a href="#"><img src="../img/twitter.svg" class="social-media-icons-footer img-fluid"></a></li>
+                            <li><a href="#"><img src="../img/facebook.svg" class="social-media-icons-footer img-fluid"></a></li>
+                            <li><a href="#"><img src="../img/instagram.svg" class="social-media-icons-footer img-fluid"></a></li>
+                            <li><a href="#"><img src="../img/youtube.svg" class="social-media-icons-footer img-fluid"></a></li>
+                        </ul>
+                    </Column>
+                    <Column Class="mt-5 mb-5" ColumnSize="ColumnSize.Is6.OnMobile.Is3.OnTablet">
+                        <h5 class="" id="theme-blue-text">CONTACT INFO</h5>
+                        <p class="mt-5 mb-2" id="theme-blue-text">Address:</p>
+                        <p class="text-white">
+                            Solna Business Park
+                            <br>
+                            Feni-2500, Stockholm
+                        </p>
+                        <p class="mb-2" id="theme-blue-text">Phone:</p>
+                        <p class="text-white">
+                            +08-123456789
+                            <br>
+                            +08-123456789
+                        </p>
+                        <p class="mb-2" id="theme-blue-text">Email:</p>
+                        <p class="text-white">
+                            support@website.com
+                            <br>
+                            support@website.com
+                        </p>
+                    </Column>
+                    <Column Class="mt-5 mb-5" ColumnSize="ColumnSize.Is6.OnMobile.Is3.OnTablet">
+                        <h5 id="theme-blue-text">USEFUL LINKS</h5>
+                        <ul class="list-unstyled p-0 mt-5">
+                            <li><a class="text-decoration-none useful-links text-white h6" href="#">Privacy policy</a></li>
+                            <li class="pt-2"><a class="text-decoration-none useful-links text-white h6" href="#">Terms & Conditions</a></li>
+                            <li class="pt-2"><a class="text-decoration-none useful-links text-white h6" href="#">Contact Us</a></li>
+                            <li class="pt-2"><a class="text-decoration-none useful-links text-white h6" href="#">Our Sitemap</a></li>
+                            <li class="pt-2"><a class="text-decoration-none useful-links text-white h6" href="#">Latest News</a></li>
+                            <li class="pt-2"><a class="text-decoration-none useful-links text-white h6" href="#">Returns</a></li>
+                        </ul>
+                    </Column>
+                    <Column Class="mt-5 mb-5 d-none d-sm-inline">
+                        <h5 id="theme-blue-text">RECENT INSTAGRAM</h5>
+                        <div class="grid-container  mt-3">
+
+                            <div class="g-box">   <img src=" " alt="">   </div>
+                            <div class="g-box">   <img src=" " alt="">   </div>
+                            <div class="g-box">   <img src=" " alt="">   </div>
+                            
+
+                            <div class="g-box">   <img src=" " alt="">    </div>
+                            <div class="g-box">   <img src=" " alt="">    </div>
+                            <div class="g-box">   <img src=" " alt="">     </div>
+                             
+
+                            <div class="g-box">   <img src=" " alt="">    </div>
+                            <div class="g-box">   <img src=" " alt="">    </div>
+                            <div class="g-box">   <img src=" " alt="">    </div>
+                             
+
+                        </div>
+                    </Column>
+                </Row>
+            </Container>
+        </div>
+        <div class="container-footer">
+            <Container>
+                <Row Class="justify-content-end align-items-baseline pt-3 pb-3">
+                    <Column>
+                        <p class="text-white">© Copyright 2020 KenKata</p>
+                    </Column>
+                    <Column Class="text-right">
+                        <img class="text-right img-fluid" src="../img/Payment system.svg">
+                    </Column>
+                </Row>
+            </Container>
+        </div>
+    </footer>
+</div>
+
+@code {
+    //public int cartCount { get; set; }
+    //protected override async Task<int> OnInitializedAsync()
+    //{
+    //    var cart = await LocalStorage.GetItemAsync<List<ProductModel>>("cart");
+    //    cartCount = cart.Count;
+    //    return cartCount;
+    //}
+
+
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("navSidebarCollapse");
+        }
+    }
+} 

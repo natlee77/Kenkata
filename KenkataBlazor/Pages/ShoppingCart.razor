@@ -1,0 +1,306 @@
+﻿@page "/shoppingcart"
+
+@inject ICartService CartService
+@inject IProductService ProductService
+@inject IJSRuntime JSRuntime
+@inject Blazored.LocalStorage.ILocalStorageService _localStorage
+@inject ISyncLocalStorageService SyncLocalStorage
+@implements IDisposable
+
+<main>
+    <!-- section 1 banner -----------------start -->
+    <div class="productnav-dark">
+        <div class="container">
+            <div class="mt-3 mb-3 d-flex justify-content-center" id="ul-li-font-color" style="color: white;">
+                <a href="/shoppingcart" class="mr-2" style="color:#20D3C2;font-weight:bold ">Shopping Cart</a> >
+                <a href="/checkout" class="mr-2 ml-2" style="color:white; font-weight:bold">Checkout</a> >
+                <a href="" class="ml-2" style="color:white; font-weight:bold">Order Complete</a>
+            </div>
+        </div>
+    </div>
+    <!-- section 1 banner -----------------end -->
+    <!-- section 2 cart totals--------------start -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+
+
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHeaderCell></TableHeaderCell>
+                            <TableHeaderCell>Product</TableHeaderCell>
+                            <TableHeaderCell>Price</TableHeaderCell>
+                            <TableHeaderCell>Quantity</TableHeaderCell>
+                            <TableHeaderCell>Subtotal</TableHeaderCell>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+
+                        @if (cart == null || cart.Count <= 0)
+                        {
+                            <span>You have no items in your cart.</span>
+                        }
+                        else
+                        {
+                            @foreach (var item in cart)
+                            {
+                                <TableRow>
+                                    <TableRowHeader><button class="btn" style="border:none" @onclick="() => RemoveCart(item)">X</button></TableRowHeader>
+                                    <TableRowCell>@item.ProductName</TableRowCell>
+                                    <TableRowCell>$@item.Price</TableRowCell>
+                                    <TableRowCell><Qty QtyByUser="item.QuantityByUser" ProductId="item.ProductId" /></TableRowCell>
+                                    <TableRowCell Class="f-green">$@UpdateSubTotal(item.ProductId)</TableRowCell>
+                                </TableRow>
+                            }
+                        }
+                    </TableBody>
+                </Table>
+
+  
+                <!-- apply coupon     start -->
+                <div class="m-3 d-flex justify-content-between">
+                    <div class="mt-5 col-md-8 border rounded">
+                        <p class="mb-4">If you have a coupon code, please apply it below.</p>
+
+                        <div class="input-group input-group-rounded prod-input">
+                            <input class="input-group-field text-left" type="text" placeholder="Coupon code" style="width: auto;">
+                            <div class="input-group-button">
+                                <input type="submit" class="button secondary product-bg-green mb-5" value="Apply Coupon" style="width: 100%; color: white;">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-5">
+                        <button class="hh-btn btn-block px-4" style="background-color: #292F51;">Update Cart</button>
+                    </div>
+                </div>
+                <!-- apply coupon     end -->
+            </div>
+
+            <!-- cart total form--------------start -->
+            <div class="col-md-4 mt-5">
+                <form>
+                    <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-header hh-bg-navy f-green text-center">CART TOTALS</div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>Subtotal</div>
+                                <div class="f-green">$@UpdateTotalOfCart()</div>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <div class="">Shipping</div>
+                                <div>
+                                    <TableRowCell Class="d-flex justify-content-end">
+                                        <RadioGroup Class=" m-4" TValue="string" Name="shipping" CheckedValue="@checkedValue" CheckedValueChanged="@OnCheckedValueChanged">
+                                            <Radio TValue="string" Value="@("$20")"> Flat rate <span Style="color: #20D3C2">20$</span></Radio>
+                                            <Radio TValue="string" Value="@("$0")"> Free shipping</Radio>
+                                            <Radio TValue="string" Value="@("$25")"> Local pickup: <span Style="color: #20D3C2">25$</span></Radio>
+                                        </RadioGroup>
+                                    </TableRowCell>
+                                    <div class="form-check mr-3 my-1 float-right">
+                                        <a class="form-check-label">
+                                            Shipping to AL
+                                        </a>
+                                    </div>
+                                    <div class="form-check mr-3 my-1 float-right">
+                                        <a class="form-check-label">
+                                            Change address
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <div>TOTAL</div>
+                                <div class="f-green">$@totalOfCart+@checkedValue</div>
+                            </div>
+                            <a href="checkout" style="text-decoration: none">
+                                <button type="submit" class="hh-btn btn-block my-3">PROCEED TO CHECKOUT</button>
+                            </a>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- cart total form--------------end -->
+        </div>
+    </div>
+    <!-- section 2 cart totals--------------end -->
+    <!-- section 5 also like product page--------------------start -->
+    <div class="container ">
+        <h2 class="d-flex justify-content-center mt-5">YOU MAY <span id="f-green" class="ml-3">ALSO LIKE</span></h2>
+    </div>
+    <div class="container d-flex justify-content-center pt-4"><img src="img/zikzak.svg" alt=""></div>
+
+
+    <div class="container  mt-5 my-4">
+        <!--Carousel Wrapper-->
+        <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
+
+            <!--Controls-->
+            <a class="carousel-control-prev ml-n5" href="#multi-item-example" style="opacity:1;" data-slide="prev">
+                <span><img src="img/Prev btn.svg" alt="" class="prev-button"></span>
+            </a>
+            <a class="carousel-control-next mr-n5" href="#multi-item-example" style="opacity:1;" data-slide="next">
+                <span><img src="img/Next btn.svg" class="next-button" alt=""></span>
+            </a>
+            <!--/.Controls-->
+            <!--Indicators-->
+            <ol class="carousel-indicators">
+                <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+                <li data-target="#multi-item-example" data-slide-to="1"></li>
+            </ol>
+            <!--/.Indicators-->
+            <!--Slides-->
+            <div class="carousel-inner" role="listbox">
+
+                <!--First slide-->
+                <div class="carousel-item active ">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ProductCard Id="33"
+                                         Picture="../img/hat.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="74"
+                                         Picture="../img/skirt.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="85"
+                                         Picture="../img/longdress.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="46"
+                                         Picture="../img/sarafon.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                    </div>
+                </div>
+                <!--/.First slide-->
+                <!--Second slide-->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ProductCard Id="37"
+                                         Picture="../img/sarafon.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="48"
+                                         Picture="../img/longdress.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="39"
+                                         Picture="../img/skirt.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                        <div class="col-md-3">
+                            <ProductCard Id="60"
+                                         Picture="../img/sarafon.svg"
+                                         OldPrice="$120.00" />
+                        </div>
+                    </div>
+                </div>
+                <!--/.Second slide-->
+            </div>
+            <!--/.Slides-->
+        </div>
+        <!--/.Carousel Wrapper-->
+    </div>
+    <!-- section 5 also like product page--------------------end -->
+
+</main>
+
+@code {
+
+
+    public int Id { get; set; }
+    private List<ShoppingCartModel> cart { get; set; }
+    private List<ShoppingCartModel> currentCart { get; set; }
+    private decimal totalOfCart { get; set; } = 0;
+    string checkedValue = "Check Payment";
+    private decimal UpdatedValue { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // cartItems = await CartService.GetCartItems();
+        cart = await _localStorage.GetItemAsync<List<ShoppingCartModel>>("cart");
+        CartService.OnChange += StateHasChanged;
+        //TotalOfCart();
+    }
+
+    public void Dispose()
+    {
+        CartService.OnChange -= StateHasChanged;
+    }
+
+    //private void TotalOfCart()
+    //{
+    //    if (cart != null)
+    //    {
+    //        foreach (var item in cart)
+    //        {
+    //            totalOfCart = totalOfCart + item.SubTotal;
+    //        }
+    //    }
+    //    CartService.UpdateComponents();
+    //}
+
+    private async Task RemoveCart(ShoppingCartModel model)
+    {
+
+        await CartService.DeleteItem(model);
+        cart.Remove(model);
+        //new List<ShoppingCartModel>();
+    }
+
+    void OnCheckedValueChanged(string value)
+    {
+        checkedValue = value;
+    }
+    //--------------------Product , hämta from Database
+
+    public ProductModel product { get; set; }
+    private IEnumerable<ProductModel> products { get; set; }
+
+    private async Task<ProductModel> GetProductAsync(int id)
+    {  // hämta by id
+        product = await Http.GetFromJsonAsync<ProductModel>(" /api/Products/{id}");
+        return product;
+    }
+
+    private decimal UpdateTotalOfCart()
+    {
+        currentCart = SyncLocalStorage.GetItem<List<ShoppingCartModel>>("cart");
+        totalOfCart = 0;
+        if (currentCart != null)
+        {
+            foreach (var item in currentCart)
+            {
+                totalOfCart = totalOfCart + item.SubTotal;
+            }
+            return totalOfCart;
+        }
+        //CartService.UpdateComponents();
+        return 0;
+    }
+
+    private decimal UpdateSubTotal(int productId)
+    {
+        currentCart = SyncLocalStorage.GetItem<List<ShoppingCartModel>>("cart");
+        if (currentCart != null)
+        {
+            if(currentCart.Find(i => i.ProductId == productId) != null)
+
+            return currentCart.Find(i => i.ProductId == productId).SubTotal;
+        }
+        return 0;
+    }
+
+}

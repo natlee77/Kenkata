@@ -1,0 +1,102 @@
+﻿/* carousel product page */
+ol.carousel-indicators li {
+    width: 10px;
+    height: 10px;
+    background-color: #cccccc;
+    border-radius: 43%;
+}
+
+ol.carousel-indicators li.active {
+    background-color: #20D3C2;
+}
+
+.carousel-indicators {
+    bottom: -50px;
+}
+.carousel-control-prev {
+    left: -70px;
+}
+.carousel-control-next {
+    right: -70px;    
+}
+
+/* carousel product page*/
+
+/* hover product page*/
+.img-invert img:hover {
+    filter: invert(100%);
+}
+.hh-hover:hover {
+    background-color: #20D3C2;
+    color: white;
+}
+.hh-hover:hover img {
+   filter: brightness(0) invert(1);
+}
+/* hover product page*/
+
+/* prod-cart-hover */
+.hh-rounded-5 {
+    border-radius: 20px;
+}
+
+.hh-bg-navy {
+    background-color: #292F51;
+}
+
+.svg-hover a img {
+    filter: grayscale(100%);
+}
+
+    .svg-hover a img:hover {
+        filter: grayscale(0);
+    }
+/* prod-cart-hover */
+/* rating star */
+.rate-area {
+    float: left;
+    border-style: none;
+}
+
+    .rate-area:not(:checked) > input {
+        position: absolute;
+        top: -9999px;
+        clip: rect(0, 0, 0, 0);
+    }
+
+    .rate-area:not(:checked) > label {
+        float: right;
+        width: 0.8em;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 180%;
+        color: lightgrey;
+    }
+
+        .rate-area:not(:checked) > label:before {
+            content: "★";
+        }
+
+    .rate-area > input:checked ~ label {
+        color: #20D3C2;
+    }
+
+    .rate-area:not(:checked) > label:hover,
+    .rate-area:not(:checked) > label:hover ~ label {
+        color: #20D3C2;
+    }
+
+    .rate-area > input:checked + label:hover,
+    .rate-area > input:checked + label:hover ~ label,
+    .rate-area > input:checked ~ label:hover,
+    .rate-area > input:checked ~ label:hover ~ label,
+    .rate-area > label:hover ~ input:checked ~ label {
+        color: #20D3C2;
+    }
+/* rating star */
+
+
+
+
+

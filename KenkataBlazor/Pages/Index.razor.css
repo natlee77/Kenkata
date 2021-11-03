@@ -1,0 +1,435 @@
+﻿
+
+/***********  Home page- *******/
+/*----------- Section1------------- shopisfun*/
+#shopisfun {
+    font-family: 'Roboto', serif;
+    background-color: #EEEEEE;
+    font-size: 1.1rem;
+}
+
+ #shopisfun .container {
+        display: contents;
+        justify-content: center;
+        align-items: center;
+ }
+
+@media(min-width:768px) {
+    #shopisfun .container {
+        display: grid;
+        justify-content: center;
+        grid-template-columns: 40% 60%;
+        align-items: center;
+    }
+}
+
+#shopisfun .logo2women {
+    display: none;
+    object-fit: cover;
+}
+
+@media(min-width:768px) {
+    #shopisfun .logo2women {
+        display: contents;
+    }
+}
+
+#banner { width: auto;}
+.btn {
+    background-color: #ffffff;
+    display: inline-flex;
+    color: #20D3C2;
+    font-weight: bolder;
+    border-radius: 2rem;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    padding: 1rem 2rem;
+    transition-duration: 0.5s;    
+}
+#shopisfun .btn{ margin-left: 3rem}
+.btn-hov:hover {
+    background-color: #20D3C2;
+    color: #ffffff;
+}
+
+#text h1 {
+    font-size: 3rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: lighter;
+    color: #0E153D
+}
+
+#text h2 {
+    font-size: 3rem;
+    color: #20D3C2;
+}
+
+#text p {
+    text-align: center;
+    color: #0E153D
+}
+
+#shopisfun img {
+    margin-top: 0.5rem;
+    height: auto;
+    width: auto;
+    padding: 0;
+    object-fit: cover;
+}
+/*----------------section2- banner 4st-----------------*/
+
+#section2 {
+    margin-top: 7rem;
+}
+@media(max-width:800px) {    
+    #fastlink p {  display: none;  }
+    #fastlink h5 { display: none;  }   
+}
+#fastlink {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-content:left;
+}
+
+#fastlink .btn {
+    background-color: rgba(32, 211, 194, 0.1);
+    margin: 0.4rem;       
+    height: auto;
+    width: auto;
+    border-radius: 0.75rem;
+}
+    #fastlink p {
+        color: #0E153D;
+        font-weight:lighter;
+    }
+    #fastlink .btn-hov:hover {
+        background-color: #20D3C2;
+        color: #ffffff;
+          
+    }
+.svg :hover {
+    fill: #ffffff;
+}     
+#grid-box {
+    display: grid;   
+    grid-template-columns: 25% 75%;  
+    align-items: center;
+}
+
+
+/*----------------------------- section3 -- Shop by category----------------------*/
+#section3 .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: "tt tt tt tt tt" 
+                         "t1 t2 t2 t3 t3" 
+                         "t4 t4 t5 t3 t3" 
+                         "t4 t4 t6 t6 t7";
+}
+#section3 {
+    margin-top: 7rem;
+}
+#service-title {
+    grid-area: tt;
+    text-align: center;  
+    color: #0E153D;
+}
+#service-title h3 {   font-weight: bolder;    }
+#text-body {color: #20D3C2;}
+#str {    text-align: center;}
+.grid-box {    
+    height: auto;
+    width: auto;     
+    margin: 0.2rem;
+    background-color: #eeeeee;
+    border-radius: 0.7rem; 
+}
+    .grid-box img {
+        display:contents;
+       
+    }
+#men {    grid-area: t1;   }
+#women {
+    grid-area: t2;
+    height: 200px;    
+}
+#kids {    grid-area: t3; }
+#hats {
+    grid-area: t5;
+    height: 200px;   
+}
+#shoes {    grid-area: t4; }
+#sunglasses {    grid-area: t6;}
+#watches {
+    grid-area: t7;
+    height: 200px;  
+}
+#category-namn {
+    height: 2rem;
+    width: 50%;
+    align-items: start;
+    background-color: #292F51;
+    border-radius: 0.7rem 0rem 0.7rem 0rem;
+}
+@media(max-width:768px) {
+    #category-namn {
+        width: 100%;
+        border-radius: 0.7rem 0.7rem 0rem 0rem;
+    } }
+/*-------------------  -----30%off------------------ */
+
+#section4 {
+    margin-top: 7rem;
+    font-family: 'Roboto', serif;
+    background-color: #CCCCCC;
+    font-size: 1.1rem;
+}
+
+#sale {
+    background-color: #20D3C2;
+    color: #ffffff;   
+}
+ 
+#section4 .container {
+        display: grid;
+        justify-content: center;
+        grid-template-columns: 25% 75%;
+        text-align: center;
+}
+@media(max-width:768px) {  
+    #section4 h1 {font-size: 20px; }
+}
+
+.btn1 {
+    background-color: #0E153D;
+    display: inline-flex;
+    color: #ffffff;
+    border-radius: 2rem;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    padding: 1rem 2rem;
+    transition-duration: 0.5s;
+} 
+
+
+#text {
+    padding-left: 3rem;
+    width: auto;
+    color: #ffffff;
+}
+
+#sale .btn-hov:hover {
+    background-color: #ffffff;
+    color: #20D3C2;
+    font-weight: bolder;    
+}
+
+#section4 p {
+    text-align: center;     
+    color: #ffffff;
+}
+/*----------------- section5------------------ */
+#section5 {
+    margin-top: 7rem;
+}
+#section5 .container {    
+    display: block;    
+}
+ 
+ 
+/*----------------- section 6-  FlashSale------------------ */
+#section6 {
+    background-color: #0E153D;
+    margin-top: 7rem;
+}
+
+#section6 .container {   
+    display: grid;
+    font-family: 'Roboto  ', sans-serif;
+    grid-template-columns: 25% 75%;
+    text-align: center;
+    
+ }
+#flashsale {
+    background-color: #20D3C2;
+    color: #ffffff;
+    margin-bottom: 6rem;
+    font-weight:bolder;
+}
+#textblock {
+    padding :2rem;
+    align-items : center;
+}
+@media(max-width:768px) {
+    #section6  .svg { width: 80%; }
+    #section6 h1 { font-size: 20px; }
+}
+
+/*------------------- section7----------------- */
+#section7 {
+    margin-top: 7rem;
+}
+.tittle {
+    text-align: center;
+}
+
+/*------------------- section 8- Top seller---------------- */
+#section-8 .grid {    
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    grid-template-areas: "ts ts" 
+                         "ts1 ts2"
+                         "ts1 ts3"; 
+}
+.logot {
+    z-index: 1;
+    position: relative;
+    left: 10px;
+    top: 10px;
+    /*display:inline-block;*/
+}
+#ts-tittle {
+    grid-area: ts;  
+    color: #0E153D;
+}
+#bexim {    grid-area: ts1; }
+   
+    #lighton {
+        grid-area: ts2;
+    }
+#rosimo {
+    grid-area: ts3;
+}
+
+/* Section 9*/
+#section-9 {
+    font-family: 'Roboto', sans-serif;
+}
+
+    #section-9 .border-square {
+        border: 1px solid black;
+        background-color: #0E153D;
+        height: 717px;
+        margin-top: 10rem;
+    }
+
+    #section-9 .quote-square {
+        height: 200px;
+        width: 190px;
+        background-color: #cccccc;
+        border-radius: 2%;
+        border: 4px solid #FFFFFF;
+        align-self: center;
+        margin: auto;
+    }
+
+    #section-9 .next-button {
+        left: 0;
+    }
+
+
+    #section-9 .prev-button {
+        left: 0;
+    }
+
+    #section-9 .quote-item p {
+    }
+
+
+
+
+/*-- Section 10 --*/
+
+
+
+.carousel-indicators {
+    bottom: -50px;
+}
+
+#section-10 .info {
+   text-align:center;
+}
+
+.homepage-square1 {
+    height: 400px;
+    width: 350px;
+    background-color: #CCCCCC;
+    border-radius: 2%;
+    position: relative;
+}
+
+.homepage-square2 {
+    height: 304px;
+    width: 275px;
+    background-color: #0E153D;
+    position: absolute;
+    left: 16rem;
+    top: -22rem;
+    border-radius: 2%;
+}
+
+.homepage-rectangular {
+    height: 77px;
+    width: 60px;
+    background-color: #20D3C2;
+    margin-left: 25px;
+}
+
+
+ol.carousel-indicators li,
+ol.carousel-indicators li.active {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    border-radius: 25%;
+    border: 0;
+    background: transparent;
+}
+
+ol.carousel-indicators li {
+    background: #CCCCCC;
+    margin-left: .5rem;
+    margin-right: .5rem;
+}
+
+    ol.carousel-indicators li.active {
+        background: #20D3C2;
+    }
+
+ .next-button {
+    position:relative;
+    left: 120px;
+}
+
+
+ .prev-button {
+    position: relative;
+    left:-125px;
+    opacity: unset;
+}
+
+.homepage-btn {
+    width: 118px;
+    height: 37px;
+    font-size: 16px;
+    color: #20D3C2;
+    background-color: #FFFFFF;
+    border-color: transparent;
+    border-radius: 24px;
+}
+
+#section-10 h3 {
+    margin-top: 10rem;
+}
+
+
+
+/* Section-11*/
+
+.subscribe-class {
+    margin-top: 10rem;
+    margin-bottom: 2rem;
+}
+
+/*^^^^^^^^^^ Home page^^^^^^^^^^*/
+

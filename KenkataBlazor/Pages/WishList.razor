@@ -1,0 +1,119 @@
+﻿@page "/wishlist"
+
+@inject IProductService ProductService
+@inject IJSRuntime JSRuntime
+@inject ILocalStorageService LocalStorage
+@inject ICartService CartService
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService _localStorage
+<main>
+
+    <div class="container-bg-banner">
+        <Container>
+            <Row Class="d-flex justify-content-between">
+                <Column>
+                    <Paragraph Class="fs-3 mt-5 mb-5" id="theme-blue-text">Wishlist</Paragraph>
+                </Column>
+                <Column Class="fs-4">
+                    <Paragraph Alignment="TextAlignment.Right" Class="text-white mt-5 mb-5"><span id="theme-blue-text">Home</span> / Wishlist</Paragraph>
+                </Column>
+            </Row>
+        </Container>
+    </div>
+    <div>
+        <div class="wishlistinfo text-center">
+            <div class="wishlist-1">
+                <h3 style="font-weight: bold; font-size:36px;"> YOUR PRODUCTS <span class="wishtext-color ml-2"> WISHLIST</span> </h3>
+            </div>
+            <div>
+                <img src="img/Path 44.svg" alt="image">
+            </div>
+
+        </div>
+    </div>
+
+    @if (wishList.Count == 0)
+    {
+        <h2 class="container mt-5 d-flex justify-content-center">Your <span class="wishtext-color ml-2 mr-2"> wishlist </span> is empty!</h2>
+    }
+
+    else
+    {
+        <div class="mt-5">
+            <Container>
+                <Row Gutter="(32,32)">
+
+                    @foreach (var data in wishList)
+                    {
+                        <Column ColumnSize="ColumnSize.Is4">
+                            <button @onclick="() => RemoveCard(data )" style="width:100%; height:51px;" class="wishlistbtn d-flex btn">
+                                <img src="./img/Close icon.svg" />
+                                <img src="./img/Close icon-color.svg" />
+                                <p class="ml-3" style="margin:0;">Remove item</p>
+
+                            </button>
+                            <ProductCard  
+                                         Id="data.Id"                                         
+                                         Picture="../img/Product thumb watch.svg"
+                                         Category="Shirt"
+                                         OldPrice="@data.Price.ToString()"
+                                         Price="@data.Price" />
+                        </Column>
+                    }
+                </Row>
+            </Container>
+
+
+        </div>
+    }
+
+
+</main>
+
+@code {
+
+
+    [Parameter]
+    public int Id { get; set; }
+
+    public ProductModel product { get; set; }
+    private IEnumerable<ProductModel> products { get; set; }
+    private List<DataModel> wishList { get; set; } = new List<DataModel>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        product = new ProductModel();
+        wishList = await _localStorage.GetItemAsync<List<DataModel>>("wish");
+    }
+    //--------------------Product , hämta from Database
+    private async Task<ProductModel> GetProductAsync(int id)
+    {
+        product = await Http.GetFromJsonAsync<ProductModel>(" /api/Products/{id}");
+        return product;
+    }
+    //--------------add to compare
+    private async Task AddToWish()
+    {
+        DataModel wishList = new DataModel()
+        {
+            Id = product.Id,
+            ProductName = product.ProductName,
+            ProductDescription=product.ProductDescription,
+            Price = product.Price,
+            QuantityPerUnit = product.QuantityPerUnit,
+            UnitsInStock = product.UnitsInStock
+        };
+
+        await ProductService.AddToWish(wishList);
+    }
+
+    private void RemoveCard(DataModel model)
+    {
+        wishList.Remove(model);
+        ProductService.DeleteWishItem(model);
+        new List<DataModel>();
+    }
+
+}

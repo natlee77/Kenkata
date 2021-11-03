@@ -1,0 +1,303 @@
+﻿@page "/checkout"
+@inject ILocalStorageService LocalStorage
+@inject ICartService CartService
+@inject NavigationManager NavManager
+<!-- section 1 banner -----------------start -->
+<div class="productnav-dark">
+    <div class="container">
+        <div class="mt-3 mb-3 d-flex justify-content-center" id="ul-li-font-color" style="color: white;  ">
+            <Link To=" /shoppingcart" class="mr-2" style="color:white;font-weight:bold">Shopping Cart  </Link> >
+            <Link To=" /checkout" class="mr-2 ml-2" Style="color: #20D3C2; font-weight: bold">Checkout </Link>  >
+            <Link To=" " class="ml-2" style=" color: white;  font-weight: bold">Order Complete</Link>
+        </div>
+    </div>
+</div>
+<!-- section 1 banner -----------------end -->
+<Container Class="Checkout">
+    <Row Class="p-5 flex-row">
+        @*column 1*@
+
+        <Column ColumnSize="ColumnSize.Is12.OnMobile.Is6.OnTablet">
+            <Paragraph>
+                Returning customer?  <NavLink Style="color: #20D3C2" href="/account"> Click here to login</NavLink>
+            </Paragraph>
+            <Paragraph>
+                Have a coupon?  <NavLink Style="color: #20D3C2" href="#">  Click here to enter your code</NavLink>
+            </Paragraph>
+            <Container Class="p-3" Style="color: #E3E3E3; border:dotted;">
+                <Paragraph Style=" color: #0E153D">
+                    If you have a coupon code, please apply it below.
+                </Paragraph>
+                <Addons Class="p-2">
+                    <Addon AddonType="AddonType.Body">
+                        <TextEdit Style="color: #0E153D;border-radius:20px;" Placeholder="Coupon code" />
+                    </Addon>
+                    <Addon AddonType="AddonType.End">
+                        <Button Block="true" Color="Color.Info" class="btn btn-rounded-blue">Apply Coupon</Button>
+                    </Addon>
+
+                </Addons>
+            </Container>
+
+
+            <Heading Size="HeadingSize.Is4" Style=" color: #0E153D; font-weight :bold" Class="pb-4 pt-5">BILLING DETAILS</Heading>
+            <Form>
+                <Row>
+                    <Field ColumnSize="ColumnSize.Is6" Class="pt-1">
+                        <FieldLabel>First Name</FieldLabel>
+                        <TextEdit @bind-Text="@Firstname" Class="form-control-contact" />
+                    </Field>
+                    <Field ColumnSize="ColumnSize.Is6" Class="pt-1">
+                        <FieldLabel>Last Name</FieldLabel>
+                        <TextEdit @bind-Text="@Lastname" Class="form-control-contact" />
+                    </Field>
+                </Row>
+
+                <Field Class="pt-3">
+                    <FieldLabel>Company name (optinal)</FieldLabel>
+                    <TextEdit Class="form-control-contact" />
+                </Field>
+                <Field Class="pt-3">
+                    <FieldLabel>Country</FieldLabel>
+                    <TextEdit Class="form-control-contact" />
+                </Field>
+                <Field Class="pt-3">
+                    <FieldLabel>Street adress</FieldLabel>
+                    <TextEdit Class="form-control-contact" />
+                </Field>
+                <Field Class="pt-3">
+                    <FieldLabel>Town / City</FieldLabel>
+                    <TextEdit Class="form-control-contact" />
+                </Field>
+                <Row>
+                    <Field ColumnSize="ColumnSize.Is6" Class="pt-3">
+                        <FieldLabel>Zip / Index</FieldLabel>
+                        <TextEdit EditMask="0123456789" Class="form-control-contact" />
+                    </Field>
+                    <Field ColumnSize="ColumnSize.Is6" Class="pt-3">
+                        <FieldLabel>Phone</FieldLabel>
+                        <TextEdit EditMask="0123456789" Class="form-control-contact" />
+                    </Field>
+                </Row>
+
+                <Field>
+                    <FieldLabel>Email address</FieldLabel>
+                    <TextEdit Role="TextRole.Email" Class="form-control-contact" />
+                </Field>
+
+                <Check TValue="bool">Create en account?</Check>
+
+                <Divider Class=" pt-2 pb-2" Style="color: #E3E3E3" />
+                <Check TValue="bool" Style="font-weight :bold">SHIP TO A DIFFERENT ADRESS?</Check>
+                <Divider Class=" pt-2 pb-2" Style="color: #E3E3E3" />
+
+                <Field>
+                    <FieldLabel>Order notes (optinal)</FieldLabel>
+                    <textarea class="form-control" rows="6" placeholder="Notes about your order, e.g.speciel notes for delivery."></textarea>
+                </Field>
+
+            </Form>
+
+
+        </Column>
+
+        @*column 2*@
+        <Column ColumnSize="ColumnSize.Is12.OnMobile.Is6.OnTablet" Style="border:dotted">
+
+            <Heading Size="HeadingSize.Is2" Class="hd pb-4 pt-4  pl-5 " Style="background-color:#0E153D; color:#20D3C2; text-align:center; ">Your order</Heading>
+
+            <Form>
+                <Table Class="table  ">
+
+                    <TableHeader Class="pb-4 pt-5">
+                        <TableRow Style="color: #20D3C2; font-size :18px ">
+                            <TableHeaderCell scope="col">Product</TableHeaderCell>
+                            <TableHeaderCell scope="col" class="d-flex justify-content-end  ">Subtotal</TableHeaderCell>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+
+                        @if (CheckoutCart == null || CheckoutCart.Count <= 0)
+                        {
+                            <span>You have no items in your cart.</span>
+                        }
+                        else
+                        {
+                            @foreach (var item in CheckoutCart)
+                            {
+                                <TableRow>
+                                    <TableRowCell>@item.ProductName</TableRowCell>
+                                    <TableRowCell Class="d-flex justify-content-end">$@item.SubTotal</TableRowCell>
+                                </TableRow>
+                            }
+                        }
+
+
+                        <TableRow Style=" color: #20D3C2;">
+                            <TableRowCell>Subtotal</TableRowCell>
+                            <TableRowCell Class="d-flex justify-content-end">$@totalOfCart</TableRowCell>
+                        </TableRow>
+
+                        <TableRow>
+                            <TableRowCell>  Shipping </TableRowCell>
+
+                            <TableRowCell Class="d-flex justify-content-end">
+                                <RadioGroup Class=" m-4" TValue="string" Name="shipping" CheckedValue="@checkedValue" CheckedValueChanged="@OnCheckedValueChanged">
+                                    <Radio TValue="string" Value="@("$20 ")"> Flat rate <span Style="color: #20D3C2">20$</span></Radio>
+                                    <Radio TValue="string" Value="@("$0 ")"> Free shipping</Radio>
+                                    <Radio TValue="string" Value="@("$25 ")"> Local pickup: <span Style="color: #20D3C2">25$</span></Radio>
+                                </RadioGroup>
+                            </TableRowCell>
+                        </TableRow>
+
+                        <TableRow Style="color: #20D3C2; font-weight: bold;  font-size: 20px;">
+                            <TableRowCell> Total </TableRowCell>
+                            <TableRowCell Class="d-flex justify-content-end  ">$@totalOfCart+@checkedValue </TableRowCell>
+                        </TableRow>
+                    </TableBody>
+
+
+                </Table>
+
+
+
+                <Divider Class=" pt-2 pb-1" Style="background-color: #20D3C2" />
+
+                <RadioGroup Class=" m-4" TValue="string" Name="payment" CheckedValue="@checkedValue" CheckedValueChanged="@OnCheckedValueChanged">
+                    <Row class=" direct-bank-transfer mt-3">
+                        <Radio TValue="string" Value="@("Direct bank transfer")"> Direct bank transfer  </Radio>
+                        <Paragraph class="direct-bank-transfer-info  " Style="color:#EEEEEE">
+                            Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won't be snipped until the funds have cleared in our account
+                        </Paragraph>
+                    </Row>
+                    <Row Class="mt-3">
+                        <Radio TValue="string" Value="@("Check Payment")"> Check Payment</Radio>
+                    </Row>
+                    <Row Class="mt-3">
+                        <Radio TValue="string" Value="@("Cash on delivery")"> Cash on delivery</Radio>
+                    </Row>
+                    <Row Class="mt-3">
+                        <Radio TValue="string" Value="@("PayPal")">
+                            PayPal
+                            <a href="#"><img src="../img/PayPal logo.svg" class="ml-2 mr-2"></a>
+                            <NavLink Style="color: #AAAAAA" href="#">What is PayPal?</NavLink>
+                        </Radio>
+                    </Row>
+                </RadioGroup>
+
+
+                <Divider Class=" pt-2  " Style="color: #EEEEEE" />
+                <Paragraph>
+                    Your personal data will be used to process your order , support your experience throughout this website , and for other purposes described in our <NavLink Style="color: #20D3C2" href="/account"> privacy policy</NavLink>
+                </Paragraph>
+                <Divider Class=" pt-2 pb-2" Style="color: #EEEEEE" />
+                <Check Class="mt-2 pb-8" TValue="bool">I have read and agree to the website <NavLink Style="color: #20D3C2" href="#"> terms and conditions *</NavLink></Check>
+                <Button @onclick="PlaceOrder" Block="true" Color="Color.Info" Class="btn btn-rounded-blue p-2 mt-5" Style="font-weight:bold">PLACE ORDER</Button>
+                <span>@OrderPlacementResult</span>
+            </Form>
+        </Column>
+    </Row>
+</Container>
+
+
+
+<Modal @ref="ConfirmationModal" Style="background-color: rgba(14, 21, 61, 0.85)">
+    <ModalContent IsCentered="true" Size="ModalSize.ExtraLarge">
+        <ModalBody>
+            <Container>
+                <h1>Your Order placement was successful!</h1>
+                <h1>Thank you for shopping with us!</h1>
+
+            </Container>
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+
+
+
+
+
+
+
+
+
+
+@code {
+    string Firstname;
+    string Lastname;
+    string checkedValue = "Check Payment";
+    private List<ShoppingCartModel> CheckoutCart { get; set; }
+    private decimal totalOfCart { get; set; } = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        CheckoutCart = await LocalStorage.GetItemAsync<List<ShoppingCartModel>>("cart");
+        TotalOfCart();
+        CartService.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        CartService.OnChange -= StateHasChanged;
+    }
+
+    private void TotalOfCart()
+    {
+        if (CheckoutCart != null)
+        {
+            foreach (var item in CheckoutCart)
+            {
+                totalOfCart = item.SubTotal + totalOfCart;
+            }
+        }
+    }
+
+
+
+
+
+
+    void OnCheckedValueChanged(string value)
+    {
+        checkedValue = value;
+    }
+
+
+
+    //send the shoppingCart as an request to the API
+    private async Task PlaceOrder()
+    {
+        var cartt = await LocalStorage.GetItemAsync<List<ShoppingCartModel>>("cart");
+        var accessToken = await LocalStorage.GetItemAsync<string>("accessToken");
+
+        if (accessToken != null)
+        {
+            var result = await CartService.PlaceOrder(cartt);
+            if (result.Succeeded)
+            {
+                ShowConfirmationModal();
+                await LocalStorage.RemoveItemAsync("cart");
+            }
+            else
+            {
+                OrderPlacementResult = result.Message;
+            }
+        }
+        else
+        {
+            NavManager.NavigateTo("/account");
+        }
+    }
+    private string OrderPlacementResult;
+    private Modal ConfirmationModal;
+    private void ShowConfirmationModal()
+    {
+        ConfirmationModal.Show();
+    }
+
+    private void HideConfirmationModal()
+    {
+        ConfirmationModal.Hide();
+    }
+
+}

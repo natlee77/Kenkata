@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\img\1155.svg" />
+    <Content Remove="wwwroot\img\24 icon.svg" />
+    <Content Remove="wwwroot\img\Banner2women.svg" />
+    <Content Remove="wwwroot\img\Outline.svg" />
+    <Content Remove="wwwroot\img\payment icon.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Pages\PortfolioDetails.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pages\PortfolioDetails.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\img\24 icon.svg" />
+    <None Include="wwwroot\img\Banner2women.svg" />
+    <None Include="wwwroot\img\1155.svg" />
+    <None Include="wwwroot\img\Outline.svg" />
+    <None Include="wwwroot\img\payment icon.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="3.0.0" />
+    <PackageReference Include="Blazored.Toast" Version="3.1.2" />
+    <PackageReference Include="blazorise.bootstrap" Version="0.9.3.2" />
+    <PackageReference Include="blazorise.icons.fontawesome" Version="0.9.3.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.2" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.23" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
+  </ItemGroup>
+
+</Project>

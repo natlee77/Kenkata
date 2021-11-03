@@ -1,0 +1,326 @@
+﻿@inject IProductService ProductService
+@inject ICartService CartService
+@inject NavigationManager NavManager
+@inject ILocalStorageService LocalStorage 
+
+@if (product == null)//&& categories == null
+{
+    <div class="w-100 text-center mb-5">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+}
+@*Render after*@
+else
+{
+
+    <div class="prodcard">
+        @*del1       hover*@
+
+
+        <div id="productcard-hoverblock" class=" prodcard-body">
+            <div class="  m-2">
+                <div id="cart-panel" style="background-color: white; border-radius: 20px; ">
+
+                    <Label class="farg-btn tooltips">
+                        <input type="radio" checked="checked" name="radio ">
+                        <span class="checkmark"></span>
+                        <span class="tooltips-f">
+                            <a href="#"><img src="../img/Tooltip - Right Color.svg" alt="icon-img" ></a>
+                        </span>
+                    </Label>
+
+                    <div class=" mt-1 ">
+                        <Label class="tooltips">
+                            <Button   class="p-0" @onclick="AddToWish"><img src="../img/Heart icon p.svg" alt="icon-img"></Button>
+                            <span class="tooltipstext">Add wishlist</span>
+                        </Label>
+                    </div>
+
+                    <Label class="tooltips ">
+                        <Button  class="p-0" @onclick="AddToCompare"><img src="../img/Compare icon p.svg" alt="icon-img"></Button>
+                        <span class="tooltipstext">Compare</span>
+                    </Label>
+
+                    <Label class="tooltips">
+                        <Button  class="p-0"  @onclick="AddToCart" ><img src="../img/Cart icon.svg" alt="icon-img"></Button>
+                        <span class="tooltipstext">Add to cart</span>
+                    </Label>
+
+                    <Label class="tooltips ">
+                        <Button class="p-0" Clicked="@ShowModal"><img src="../img/Search icon1.svg" alt="icon-img"></Button>
+                        <span class="tooltipstext">Quick view</span>
+                    </Label>
+                </div>
+
+                <div id="infos" class="  mt-2">
+                    <div style="color:white">
+                        @product.ProductName
+                        @Name
+                    </div>
+                    <div id="category" class="border   text-white pl-2 pr-2 ">
+                        Placeholder
+                    </div>
+                    <div style="color:white;text-decoration:line-through">
+                        @OldPrice
+                    </div>
+                </div>
+
+                <div id="price-stars" class="row justify-content-between  ml-1 mr-1 " style="color: #20D3C2; font-size:20px;">
+                    <a href="/product/@product.Id">
+                      
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        @*del2 *@
+
+        <div class="product-card" >
+            <div class="ProductId">@product.Id </div>
+            <div class="picture" >
+                <img style="width: 100%; " src="@Picture" alt="" class="img-fluid" >
+            </div>
+            @*<div class="status-icon">
+                    <img style="width: 100%; " src="@StatusIcon" alt="icon" class="img-fluid">
+                </div>*@
+            <div id="product-namn"  @onclick="ProductIdPage" class="productnamn text-center pt-2" style="color: white;"> @product.ProductName </div>
+        </div>
+    </div>
+
+    <Modal @ref="modalRef" Style="background-color: rgba(14, 21, 61, 0.85)">
+        <ModalContent IsCentered="true" Size="ModalSize.ExtraLarge">
+            <ModalBody>
+                <Container>
+                    <Row Class="justify-content-end">
+                        <CloseButton />
+                    </Row>
+                    <Row Class="d-flex flex-column flex-sm-row">
+                        <Column>
+                            <img class="w-100" src="@Picture" />
+                        </Column>
+                        <Column>
+                            <Row Class="mt-3">
+                                @*Hämta rating från API*@
+                                <h6>(* customer ratings)</h6>
+                            </Row>
+                            <Row Class="mt-3">
+                                <span id="theme-blue-text">@product.ProductName @Name</span>
+                            </Row>
+                            <Row Class="mt-3">
+                                @product.ProductDescription
+                                @Info
+                            </Row>
+                            <Row Class="mt-3 align-items-center">
+                                <h5 id="theme-blue-text">$@GetPrice()</h5>
+                                <h6 class="text-decoration-line-through text-muted ml-3">@OldPrice</h6>
+                                @*Hämta units in stock från API*@
+                                <Label class="ml-3 d-inline-flex">
+                                    <img src="../img/In stock.svg" class="my-auto" />
+                                    <h6 class="my-auto ml-2">In Stock</h6>
+                                </Label>
+                            </Row>
+                            <Row Class="mt-3 d-flex flex-column flex-sm-row align-items-center">
+                                <Column ColumnSize="ColumnSize.IsAuto" class="p-0">
+                                    <div class="btn-toolbar" role="toolbar">
+                                        <div class="btn-group input-group" role="group" aria-label="Basic example">
+                                            <div class="input-group-prepend">
+                                                <Button Clicked="DecreaseQuantity" class="btn btn-secondary quantity-group-btn border-secondary">-</Button>
+                                            </div>
+                                            <NumericEdit TValue="int" Value="@Quantity" ValueChanged="OnQuantityChanged" Min="0" Class="quantity-group-input border-secondary"></NumericEdit>
+                                            <div class="input-group-append">
+                                                <Button Clicked="IncreaseQuantity" class="btn btn-secondary quantity-group-btn border-secondary">+</Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Column>
+                                <Column ColumnSize="ColumnSize.IsAuto" class="p-0 mt-3 mt-sm-0 ml-sm-3">
+                                    <Button @onclick="AddToCart" class="btn-rounded-blue text-white prodcard-addtocart"><i class="fas fa-shopping-cart" /> Add to cart</Button>
+                                </Column>
+                                <Column ColumnSize="ColumnSize.IsAuto" class="p-0 mt-3 mt-sm-0 ml-sm-3">
+                                    <Button class="p-0"><img src="../img/Color icon.svg" /></Button>
+                                    <Tooltip Text="Compare">
+                                        <Button  @onclick="AddToCompare" class="p-0 ml-2"><img src="../img/Compare icon.svg" class="quickview-icons" /></Button>
+                                    </Tooltip>
+                                    <Tooltip Text="Add to wishlist">
+                                        <Button @onclick="AddToWish" class="p-0 ml-2"><img src="../img/Heart icon.svg" class="quickview-icons" /></Button>
+                                    </Tooltip>
+                                </Column>
+                            </Row>
+                            <Row Class="mt-3">
+                                @*Hämta category från API*@
+                                Category: <span style="color:#20D3C2; font-weight:bold;margin-left:1rem;">  @Category</span>
+                            </Row>
+                            <Row Class="mt-3">
+                                @*Ta bort?*@
+                                Tags:
+                            </Row>
+                            <Row Class="mt-3">
+                                Share:
+                                <span id="theme-blue-text">
+                                    <i class="fab fa-facebook-f ml-3 nav" />
+                                    <i class="fab fa-twitter ml-3 nav" />
+                                    <i class="fab fa-google-plus-g ml-3 nav" />
+                                    <i class="fab fa-instagram ml-3 nav" />
+                                    <i class="fab fa-youtube ml-3 nav" />
+                                </span>
+                            </Row>
+                        </Column>
+                    </Row>
+                </Container>
+            </ModalBody>
+        </ModalContent>
+    </Modal>
+
+}
+
+
+@code {
+    //------------------product card
+    [Parameter]
+    public int Id { get; set; }
+    [Parameter]
+    public string Name { get; set; }
+    [Parameter]
+    public string Picture { get; set; }
+    [Parameter]
+    public string StatusIcon { get; set; }
+    [Parameter]
+    public decimal Price { get; set; }
+    [Parameter]
+    public string OldPrice { get; set; }
+    [Parameter]
+    public string Category { get; set; }
+    [Parameter]
+    public string Info { get; set; }
+
+
+    //--------------------Product , hämta from Database
+
+    public ProductModel product { get; set; }
+    private IEnumerable<ProductModel> products { get; set; }
+    private List<DataModel> wishList { get; set; } = new List<DataModel>();
+    private List<CompareModel> compareList { get; set; } = new List<CompareModel>();
+    public string customerId { get; set; }
+
+
+    private async Task<ProductModel> GetProductAsync(int id)
+
+    {
+        product = await Http.GetFromJsonAsync<ProductModel>($"api/Products/{id}");
+        return product;
+    }
+
+    private decimal GetPrice()
+    {
+        // If product card is passed an ID as parameter, return price from API call
+        if (Id != 0)
+        {
+            return product.Price;
+        }
+        // Else return Price parameter
+        return Price;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        customerId = await LocalStorage.GetItemAsync<string>("customerId");
+        product = new ProductModel();
+
+        // If ID is passed as parameter, do the API call
+        if (Id != 0)
+        {
+            await GetProductAsync(Id);
+        }
+    }
+
+    private async Task AddToCart()
+    {
+        ShoppingCartModel shoppingCart = new ShoppingCartModel()
+        {
+            ProductId = product.Id,
+            ProductName = product.ProductName,
+            Price = product.Price,
+            QuantityByUser = Quantity,
+            //customerId is set to 5(or any) just to be able to place the order FOR NOW!!
+            //We can create a user as a guest to save the orders that is placed without account.
+            CustomerId = Int32.Parse(customerId)
+        };
+
+        await CartService.AddToCart(shoppingCart);
+    }
+    //------------------shopping cart card
+
+    //add to compare
+    private async Task AddToCompare()
+    {
+        CompareModel compareList = new CompareModel()
+        {
+            Id = product.Id,
+            ProductName = product.ProductName,
+            Price = product.Price,
+            Picture = ""
+        };
+        await ProductService.AddToCompare(compareList);
+    }
+
+    //add to compare
+    private async Task AddToWish()
+    {
+        DataModel wishList = new DataModel()
+        {
+            Id = product.Id,
+            ProductName = product.ProductName,
+            Price = product.Price,
+            QuantityPerUnit = product.QuantityPerUnit,
+            UnitsInStock = product.UnitsInStock,
+            Picture = ""
+        };
+        await ProductService.AddToWish(wishList);
+    }
+
+    public int Quantity { get; set; } = 1;
+
+    private Modal modalRef;
+
+    private void ShowModal()
+    {
+        modalRef.Show();
+    }
+
+    private void HideModal()
+    {
+        modalRef.Hide();
+    }
+
+    private void DecreaseQuantity()
+    {
+        if (Quantity > 0)
+        {
+            Quantity--;
+        }
+        else
+        {
+            Quantity = 0;
+        }
+    }
+
+    private void OnQuantityChanged(int value)
+    {
+        Quantity = value;
+    }
+
+    private void IncreaseQuantity()
+    {
+        Quantity++;
+    }
+
+    private void ProductIdPage()
+    {
+        var id = product.Id;
+        NavManager.NavigateTo($"/Product/{id}");
+    }
+
+}
